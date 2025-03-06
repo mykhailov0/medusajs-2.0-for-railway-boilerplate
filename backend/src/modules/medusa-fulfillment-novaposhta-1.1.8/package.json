@@ -1,0 +1,65 @@
+{
+  "name": "medusa-fulfillment-novaposhta",
+  "version": "1.1.8",
+  "description": "Nova Poshta Fulfillment provider for Medusa",
+  "main": "dist/index.js",
+  "author": "Andrii Nutskovskyi",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@medusajs/admin": "^7.0.0",
+    "@medusajs/icons": "^1.0.0",
+    "@medusajs/medusa": "^1.14.0",
+    "@medusajs/ui": "^1.0.0",
+    "@types/cors": "^2.8.13",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
+    "client-sessions": "^0.8.0",
+    "cross-env": "^5.2.1",
+    "eslint": "^8.23.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "jest": "^25.5.2",
+    "medusa-interfaces": "1.3.7",
+    "medusa-react": "^9.0.4",
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.2.3",
+    "typescript": "^4.9.5"
+  },
+  "scripts": {
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "test": "jest --passWithNoTests src",
+    "build": "tsc -p ./tsconfig.server.json && medusa-admin bundle",
+    "watch": "tsc --watch"
+  },
+  "peerDependencies": {
+    "@medusajs/admin": "^7.0.0",
+    "@medusajs/icons": "^1.0.0",
+    "@medusajs/medusa": "^1.14.0",
+    "@medusajs/ui": "^1.0.0",
+    "medusa-interfaces": "^1.3.7",
+    "medusa-react": "^9.0.4"
+  },
+  "peerDependenciesMeta": {
+    "medusa-react": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "medusa-core-utils": "^1.2.0"
+  },
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-fulfillment"
+  ]
+}

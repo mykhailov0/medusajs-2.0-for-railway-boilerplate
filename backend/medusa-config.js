@@ -21,9 +21,7 @@ import {
   MINIO_SECRET_KEY,
   MINIO_BUCKET,
   MEILISEARCH_HOST,
-  MEILISEARCH_ADMIN_KEY,
-  FONDY_API_KEY,
-  FONDY_MERCHANT_ID
+  MEILISEARCH_ADMIN_KEY
 } from 'lib/constants';
 
 loadEnv(process.env.NODE_ENV, process.cwd());
@@ -47,6 +45,15 @@ const medusaConfig = {
     disable: SHOULD_DISABLE_ADMIN,
   },
   modules: [
+    {
+      key: Modules.FULFILLMENT,
+      resolve: "./modules/medusa-fulfillment-novaposhta",
+      options: {
+        api_key: process.env.NOVAPOSHTA_API_KEY,
+      }
+    }
+  ]
+};
     {
       key: Modules.FILE,
       resolve: '@medusajs/file',
@@ -75,12 +82,18 @@ const medusaConfig = {
     ...(REDIS_URL ? [{
       key: Modules.EVENT_BUS,
       resolve: '@medusajs/event-bus-redis',
-      options: { redisUrl: REDIS_URL }
+      options: {
+        redisUrl: REDIS_URL
+      }
     },
     {
       key: Modules.WORKFLOW_ENGINE,
       resolve: '@medusajs/workflow-engine-redis',
-      options: { redis: { url: REDIS_URL } }
+      options: {
+        redis: {
+          url: REDIS_URL,
+        }
+      }
     }] : []),
     ...(SENDGRID_API_KEY && SENDGRID_FROM_EMAIL || RESEND_API_KEY && RESEND_FROM_EMAIL ? [{
       key: Modules.NOTIFICATION,
@@ -123,18 +136,10 @@ const medusaConfig = {
           },
         ],
       },
-    }] : []),
-    {
-      key: Modules.PAYMENT,
-      resolve: "./modules/medusa-payment-fondy",
-      options: {
-        api_key: FONDY_API_KEY,
-        merchant_id: FONDY_MERCHANT_ID,
-      },
-    }
+    }] : [])
   ],
   plugins: [
-    ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
+  ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
       resolve: '@rokmohar/medusa-plugin-meilisearch',
       options: {
         config: {
