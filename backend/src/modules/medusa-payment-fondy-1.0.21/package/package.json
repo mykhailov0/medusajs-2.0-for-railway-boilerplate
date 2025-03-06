@@ -1,0 +1,52 @@
+{
+  "name": "medusa-payment-fondy",
+  "version": "1.0.21",
+  "description": "Payment provider for Fondy payment system",
+  "main": "index.js",
+  "author": "Andrii Nutskovskyi",
+  "license": "MIT",
+  "devDependencies": {
+    "@medusajs/admin": "^7.0.2",
+    "@medusajs/icons": "^1.0.0",
+    "@medusajs/medusa": "^1.14.0",
+    "@medusajs/ui": "^1.0.0",
+    "@types/cors": "^2.8.13",
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4",
+    "medusa-react": "^9.0.4",
+    "medusa-test-utils": "^1.1.37",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cloudflare-express": "^1.0.1",
+    "cloudipsp-node-js-sdk": "^1.0.8",
+    "cors": "^2.8.5",
+    "medusa-core-utils": "^1.2.0",
+    "typeorm": "^0.3.17",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "test": "jest --passWithNoTests src",
+    "build": "tsc -p ./tsconfig.server.json && medusa-admin bundle",
+    "watch": "tsc --watch"
+  },
+  "peerDependencies": {
+    "@medusajs/admin": "^7.0.0",
+    "@medusajs/icons": "^1.0.0",
+    "@medusajs/medusa": "^1.14.0",
+    "@medusajs/ui": "^1.0.0",
+    "medusa-interfaces": "1.3.3",
+    "medusa-react": "^9.0.4"
+  },
+  "peerDependenciesMeta": {
+    "medusa-react": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-payment"
+  ]
+}
