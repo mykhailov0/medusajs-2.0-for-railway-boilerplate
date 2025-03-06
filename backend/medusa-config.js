@@ -51,9 +51,7 @@ const medusaConfig = {
       options: {
         api_key: process.env.NOVAPOSHTA_API_KEY,
       }
-    }
-  ]
-};
+    },
     {
       key: Modules.FILE,
       resolve: '@medusajs/file',
@@ -139,7 +137,7 @@ const medusaConfig = {
     }] : [])
   ],
   plugins: [
-  ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
+    ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
       resolve: '@rokmohar/medusa-plugin-meilisearch',
       options: {
         config: {
