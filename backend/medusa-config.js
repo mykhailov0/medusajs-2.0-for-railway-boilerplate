@@ -47,7 +47,7 @@ const medusaConfig = {
   modules: [
     {
       key: Modules.FULFILLMENT,
-      resolve: "./modules/medusa-fulfillment-novaposhta",
+      resolve: "./src/modules/medusa-fulfillment-novaposhta",
       options: {
         api_key: process.env.NOVAPOSHTA_API_KEY,
       }
