@@ -26,11 +26,11 @@ export default async function Nav() {
               data-testid="nav-store-link"
             >
                 <img
-      src="/public/logo.png"
+      src="/logo.png"
       alt="novv.pro"
       className="h-10 w-auto" 
     />
-              Medusa Store
+              
             </LocalizedClientLink>
           </div>
 
