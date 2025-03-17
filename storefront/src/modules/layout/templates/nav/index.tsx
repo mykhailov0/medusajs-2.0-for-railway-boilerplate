@@ -26,7 +26,7 @@ export default async function Nav() {
               data-testid="nav-store-link"
             >
                 <img
-      src="/public/logo.png
+      src="/public/logo.png"
       alt="novv.pro"
       className="h-10 w-auto" 
     />
