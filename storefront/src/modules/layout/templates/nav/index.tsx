@@ -25,6 +25,11 @@ export default async function Nav() {
               className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
               data-testid="nav-store-link"
             >
+                <img
+      src="/public/logo.png
+      alt="novv.pro"
+      className="h-10 w-auto" 
+    />
               Medusa Store
             </LocalizedClientLink>
           </div>
