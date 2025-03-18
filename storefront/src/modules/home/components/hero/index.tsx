@@ -8,7 +8,7 @@ const Hero = () => {
         <span>
           <Heading
             level="h1"
-            className="text-3xl leading-10 text-ui-fg-base font-normal"
+            className="text-3xl leading-10 text-ui-fg-base font-norma bg-blue-300"
           >
             Вітаю! You have successfully deployed your Medusa 2.0 store on Railway!
           </Heading>
