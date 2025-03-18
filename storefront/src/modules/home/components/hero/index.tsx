@@ -5,12 +5,7 @@ const Hero = () => {
   return (
     <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
       <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
-        
-        <Heading level="h1" className="text-3xl leading-10 text-ui-fg-base font-normal bg-blue-300">
-          Вітаю! You have successfully deployed your Medusa 2.0 store on Railway!
-        </Heading>
-
-        <section className="bg-gray-50 py-24 sm:py-32">
+      <section className="bg-gray-50 py-24 sm:py-32">
           <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
             <h2 className="text-center text-base/7 font-semibold text-indigo-600">Deploy faster</h2>
             <p className="mx-auto mt-2 max-w-lg text-center text-4xl font-semibold tracking-tight text-gray-950 sm:text-5xl">
@@ -109,7 +104,11 @@ const Hero = () => {
           </div>
         </section>
 
-        <Heading level="h2" className="text-3xl leading-10 text-ui-fg-subtle font-normal">
+        <Heading level="h1" className="text-3xl leading-10 text-ui-fg-base font-normal bg-blue-300">
+          Вітаю! You have successfully deployed your Medusa 2.0 store on Railway!
+        </Heading>
+
+              <Heading level="h2" className="text-3xl leading-10 text-ui-fg-subtle font-normal">
           Need help customizing your store?
         </Heading>
 
