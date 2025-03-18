@@ -45,14 +45,7 @@ const medusaConfig = {
     disable: SHOULD_DISABLE_ADMIN,
   },
   modules: [
-    {
-      key: Modules.FULFILLMENT,
-      resolve: "./modules/medusa-fulfillment-novaposhta",
-      options: {
-        api_key: process.env.NOVAPOSHTA_API_KEY,
-      }
-    },
-    {
+        {
       key: Modules.FILE,
       resolve: '@medusajs/file',
       options: {
@@ -154,9 +147,18 @@ const medusaConfig = {
           }
         }
       }
-    }] : [])
+    }] : []),
+    {
+      resolve: 'medusa-custom-attributes',
+      options: {
+        enableUI: true,
+        projectConfig: {
+          store_cors: STORE_CORS,
+          admin_cors: ADMIN_CORS,
+        },
+      },
+    }
   ]
 };
-
 console.log(JSON.stringify(medusaConfig, null, 2));
 export default defineConfig(medusaConfig);
