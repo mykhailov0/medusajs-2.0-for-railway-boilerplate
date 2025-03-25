@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "medusa-custom-attributes": "^1.0.19"
+    "medusa-custom-attributes": "^1.0.19",
+    "medusa-payment-liqpay": "^0.0.14"
   }
 }
