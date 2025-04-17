@@ -8,7 +8,7 @@ import {
   MenuIcon,
   XIcon,
   ChevronRightIcon
-} from '@heroicons/react/outline'
+} from '@medusajs/icons'
 
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
