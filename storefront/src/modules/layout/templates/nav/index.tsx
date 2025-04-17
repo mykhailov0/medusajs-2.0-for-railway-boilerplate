@@ -32,33 +32,31 @@ export default function Nav() {
     <header className="bg-gray-800 text-white">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
-        <Link href="/"><a><img src="/logo.svg" alt="Logo" className="h-8"/></a></Link>
+        <Link href="/">
+          <a><img src="/logo.svg" alt="Logo" className="h-8 w-auto"/></a>
+        </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop navigation */}
         <nav className="hidden md:flex items-center space-x-8 uppercase text-sm">
-          {/* Mega‑menu trigger */}
+          {/* Mega-menu trigger */}
           <div className="relative group">
             <Link href="/shop">
-              <a className="flex items-center hover:text-orange-400">
-                Магазин 
-                <img
-                  src="/icons/chevron-right.svg"
-                  alt="›"
-                  className="ml-1 h-4 w-4"
-                />
+              <a className="flex items-center hover:text-orange-400 whitespace-nowrap">
+                Магазин <span className="ml-1 text-base">›</span>
               </a>
             </Link>
-            {/* Mega‑menu panel */}
-            <div className="pointer-events-none absolute left-0 top-full w-full bg-gray-800 opacity-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200">
-              <div className="container mx-auto grid grid-cols-3 gap-8 px-6 py-8">
-                {megaMenu.map((section) => (
+
+            {/* Mega-menu panel */}
+            <div className="absolute inset-x-0 top-full mt-0 hidden bg-gray-800 group-hover:block z-10">
+              <div className="container mx-auto px-6 py-8 grid grid-cols-3 gap-8">
+                {megaMenu.map(section => (
                   <div key={section.heading}>
                     <h4 className="font-semibold mb-2">{section.heading}</h4>
                     <ul className="space-y-2">
-                      {section.links.map((link) => (
+                      {section.links.map(link => (
                         <li key={link.href}>
                           <Link href={link.href}>
-                            <a className="block text-sm hover:text-orange-400">
+                            <a className="block text-sm hover:text-orange-400 whitespace-nowrap">
                               {link.label}
                             </a>
                           </Link>
@@ -71,7 +69,7 @@ export default function Nav() {
             </div>
           </div>
 
-          {/* Other links */}
+          {/* Other navigation items */}
           <Link href="/vinyl"><a className="hover:text-gray-300">Вініл</a></Link>
           <Link href="/cd"><a className="hover:text-gray-300">CD</a></Link>
           <Link href="/genres"><a className="hover:text-gray-300">Жанри</a></Link>
@@ -81,32 +79,24 @@ export default function Nav() {
 
         {/* Search / Login / Cart / Mobile toggle */}
         <div className="flex items-center space-x-4">
-          {/* Search */}
+          {/* Search form */}
           <form className="hidden lg:flex items-center border border-[#585A5F] rounded-full w-[302px] h-[40px] overflow-hidden">
-  <input
-    type="text"
-    placeholder="Пошук..."
-    className="
-      w-full h-full
-      bg-gray-800
-      placeholder-[#585A5F]
-      text-sm
-      focus:outline-none
-      px-[10px]
-      py-[6px]
-    "
-  />
-  <button type="submit" className="flex items-center justify-center px-[10px] py-[6px]">
-    <img src="/icons/search.svg" alt="Search" className="h-[18px] w-[18px]" />
-  </button>
-</form>
+            <input
+              type="text"
+              placeholder="Пошук..."
+              className="w-full h-full bg-gray-800 placeholder-[#585A5F] text-sm focus:outline-none px-[10px] py-[6px]"
+            />
+            <button type="submit" className="flex items-center justify-center px-[10px] py-[6px]">
+              <img src="/icons/search.svg" alt="Search" className="h-[18px] w-[18px]"/>
+            </button>
+          </form>
 
-          {/* Login */}
+          {/* Login link */}
           <Link href="/login">
             <a className="hidden lg:inline hover:text-gray-300 text-sm">Увійти</a>
           </Link>
 
-          {/* Cart */}
+          {/* Cart icon */}
           <Link href="/cart">
             <a className="relative hover:text-gray-300">
               <img src="/icons/cart.svg" alt="Cart" className="h-6 w-6"/>
@@ -116,10 +106,10 @@ export default function Nav() {
             </a>
           </Link>
 
-          {/* Mobile menu button */}
+          {/* Mobile menu toggle */}
           <button
             className="md:hidden focus:outline-none"
-            onClick={() => setMobileOpen((v) => !v)}
+            onClick={() => setMobileOpen(v => !v)}
           >
             <img
               src={mobileOpen ? '/icons/close.svg' : '/icons/menu.svg'}
@@ -134,11 +124,11 @@ export default function Nav() {
       {mobileOpen && (
         <nav className="md:hidden bg-gray-800">
           <ul className="p-4 space-y-4">
-            {megaMenu.map((section) => (
+            {megaMenu.map(section => (
               <li key={section.heading}>
                 <p className="font-semibold">{section.heading}</p>
                 <ul className="pl-4 mt-2 space-y-1">
-                  {section.links.map((link) => (
+                  {section.links.map(link => (
                     <li key={link.href}>
                       <Link href={link.href}>
                         <a className="block hover:text-orange-400">{link.label}</a>
@@ -148,7 +138,7 @@ export default function Nav() {
                 </ul>
               </li>
             ))}
-            {/* repeat other links for mobile */}
+            {/* repeat other items */}
             <li><Link href="/vinyl"><a className="block hover:text-gray-300">Вініл</a></Link></li>
             <li><Link href="/cd"><a className="block hover:text-gray-300">CD</a></Link></li>
             <li><Link href="/genres"><a className="block hover:text-gray-300">Жанри</a></Link></li>
