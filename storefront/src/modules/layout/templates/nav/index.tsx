@@ -1,4 +1,5 @@
 // store/components/Header.jsx
+'use client'
 import Link from 'next/link'
 import { useState } from 'react'
 import { SearchIcon, ShoppingCartIcon, ChevronRightIcon } from '@heroicons/react/outline'
