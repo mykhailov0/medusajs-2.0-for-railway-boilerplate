@@ -82,16 +82,24 @@ export default function Nav() {
         {/* Search / Login / Cart / Mobile toggle */}
         <div className="flex items-center space-x-4">
           {/* Search */}
-          <form className="hidden lg:flex items-center border border-gray-700 rounded overflow-hidden">
-            <input
-              type="text"
-              placeholder="Пошук..."
-              className="px-3 py-1 bg-gray-800 placeholder-gray-500 focus:outline-none"
-            />
-            <button type="submit" className="px-3">
-              <img src="/icons/search.svg" alt="Search" className="h-5 w-5"/>
-            </button>
-          </form>
+          <form className="hidden lg:flex items-center border border-[#585A5F] rounded-full w-[302px] h-[40px] overflow-hidden">
+  <input
+    type="text"
+    placeholder="Пошук..."
+    className="
+      w-full h-full
+      bg-gray-800
+      placeholder-[#585A5F]
+      text-sm
+      focus:outline-none
+      px-[10px]
+      py-[6px]
+    "
+  />
+  <button type="submit" className="flex items-center justify-center px-[10px] py-[6px]">
+    <img src="/icons/search.svg" alt="Search" className="h-[18px] w-[18px]" />
+  </button>
+</form>
 
           {/* Login */}
           <Link href="/login">
