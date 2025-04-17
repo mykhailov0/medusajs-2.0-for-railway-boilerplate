@@ -55,9 +55,9 @@ export default function Nav() {
               </a>
             </Link>
 
-            {/* Mega-menu panel */}
-            <div className="absolute top-full mt-0 hidden group-hover:block z-10">
-              <div className="container mx-auto px-6 py-8 grid grid-cols-3 gap-8 bg-[#34373F] rounded-b">
+            {/* Mega-menu full-width panel */}
+            <div className="absolute inset-x-0 top-full hidden group-hover:block z-10 bg-[#34373F]">
+              <div className="container mx-auto px-6 py-8 grid grid-cols-3 gap-8">
                 {megaMenu.map(section => (
                   <div key={section.heading}>
                     <h4 className="font-semibold mb-2">{section.heading}</h4>
