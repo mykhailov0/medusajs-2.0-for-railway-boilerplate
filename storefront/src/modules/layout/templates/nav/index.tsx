@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -27,12 +28,21 @@ export default function Nav() {
       ],
     },
   ]
+
   return (
     <header className="bg-[#34373F] text-white">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/">
-          <a><img src="/logo.svg" alt="Logo" className="h-8 w-auto"/></a>
+          <a aria-label="На головну">
+            <Image
+              src="/logo.svg"
+              alt="desadisc logo"
+              width={128}
+              height={32}
+              className="h-8 w-auto"
+            />
+          </a>
         </Link>
 
         {/* Desktop navigation */}
@@ -45,7 +55,7 @@ export default function Nav() {
               </a>
             </Link>
 
-            {/* Mega-menu panel constrained by container width */}
+            {/* Mega-menu panel */}
             <div className="absolute top-full mt-0 hidden group-hover:block z-10">
               <div className="container mx-auto px-6 py-8 grid grid-cols-3 gap-8 bg-[#34373F] rounded-b">
                 {megaMenu.map(section => (
@@ -83,30 +93,52 @@ export default function Nav() {
             <input
               type="text"
               placeholder="Пошук..."
+              aria-label="Пошук по сайту"
               className="w-full h-full bg-[#34373F] placeholder-[#585A5F] text-sm focus:outline-none px-[10px] py-[6px]"
             />
-            <button type="submit" className="flex items-center justify-center px-[10px] py-[6px]">
-              <img src="/icons/search.svg" alt="Search" className="h-[18px] w-[18px]"/>
+            <button
+              type="submit"
+              aria-label="Почати пошук"
+              className="flex items-center justify-center px-[10px] py-[6px]"
+            >
+              <Image
+                src="/icons/search.svg"
+                alt="icon search"
+                width={18}
+                height={18}
+              />
             </button>
           </form>
 
           {/* Login link */}
-          <Link href="/login"><a className="hidden lg:inline hover:text-gray-300 text-sm">Увійти</a></Link>
+          <Link href="/login">
+            <a className="hidden lg:inline hover:text-gray-300 text-sm">Увійти</a>
+          </Link>
 
           {/* Cart icon */}
           <Link href="/cart">
-            <a className="relative hover:text-gray-300">
-              <img src="/icons/cart.svg" alt="Cart" className="h-6 w-6"/>
+            <a className="relative hover:text-gray-300" aria-label="Перейти до кошика">
+              <Image
+                src="/icons/cart.svg"
+                alt="icon cart"
+                width={24}
+                height={24}
+              />
               <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1">0</span>
             </a>
           </Link>
 
           {/* Mobile menu toggle */}
-          <button className="md:hidden focus:outline-none" onClick={() => setMobileOpen(v => !v)}>
-            <img
+          <button
+            className="md:hidden focus:outline-none"
+            onClick={() => setMobileOpen(v => !v)}
+            aria-label={mobileOpen ? 'Закрити меню' : 'Відкрити меню'}
+          >
+            <Image
               src={mobileOpen ? '/icons/close.svg' : '/icons/menu.svg'}
-              alt="Toggle menu"
-              className="h-6 w-6"
+              alt="icon menu toggle"
+              width={24}
+              height={24}
             />
           </button>
         </div>
@@ -140,3 +172,5 @@ export default function Nav() {
         </nav>
       )}
     </header>
+  )
+}
