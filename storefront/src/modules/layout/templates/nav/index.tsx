@@ -2,13 +2,6 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import {
-  SearchIcon,
-  ShoppingCartIcon,
-  MenuIcon,
-  XIcon,
-  ChevronRightIcon
-} from '@medusajs/icons'
 
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -18,24 +11,24 @@ export default function Nav() {
       heading: 'Вінілові платівки',
       links: [
         { label: 'Поп‑музика', href: '/shop/vinyl/pop' },
-        { label: 'Рок',       href: '/shop/vinyl/rock' },
-        { label: 'Джаз',      href: '/shop/vinyl/jazz' },
+        { label: 'Рок',        href: '/shop/vinyl/rock' },
+        { label: 'Джаз',       href: '/shop/vinyl/jazz' },
       ],
     },
     {
       heading: 'CD‑диски',
       links: [
-        { label: 'Класика', href: '/shop/cd/classical' },
-        { label: 'Метал',   href: '/shop/cd/metal' },
-        { label: 'Новинки', href: '/shop/cd/new' },
+        { label: 'Класика',   href: '/shop/cd/classical' },
+        { label: 'Метал',     href: '/shop/cd/metal' },
+        { label: 'Новинки',   href: '/shop/cd/new' },
       ],
     },
     {
       heading: 'Огляд',
       links: [
-        { label: 'Жанри',           href: '/shop/genres' },
-        { label: 'Нові надходження', href: '/shop/new' },
-        { label: 'Акції',           href: '/shop/sale' },
+        { label: 'Жанри',             href: '/shop/genres' },
+        { label: 'Нові надходження',  href: '/shop/new' },
+        { label: 'Акції',             href: '/shop/sale' },
       ],
     },
   ]
@@ -46,7 +39,7 @@ export default function Nav() {
         {/* Logo */}
         <Link href="/">
           <a>
-            <img src="/logo.svg" alt="Logo" className="h-8" />
+            <img src="/logo.svg" alt="Logo" className="h-8"/>
           </a>
         </Link>
 
@@ -55,11 +48,9 @@ export default function Nav() {
           <div className="group relative">
             <Link href="/shop">
               <a className="flex items-center hover:text-gray-300">
-                Магазин <ChevronRightIcon className="h-4 w-4 ml-1" />
+                Магазин <span className="ml-1">›</span>
               </a>
             </Link>
-
-            {/* Mega‑menu */}
             <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100
                             absolute left-0 top-full mt-2 w-screen max-w-4xl bg-gray-800 p-6
                             grid grid-cols-3 gap-6 transition-all">
@@ -79,8 +70,6 @@ export default function Nav() {
               ))}
             </div>
           </div>
-
-          {/* Інші пункти */}
           <Link href="/vinyl"><a className="hover:text-gray-300">Вініл</a></Link>
           <Link href="/cd"><a className="hover:text-gray-300">CD</a></Link>
           <Link href="/genres"><a className="hover:text-gray-300">Жанри</a></Link>
@@ -88,7 +77,7 @@ export default function Nav() {
           <Link href="/sale"><a className="hover:text-gray-300">Акції</a></Link>
         </nav>
 
-        {/* Search, Cart, Mobile toggle */}
+        {/* Search & Cart & Mobile toggle */}
         <div className="flex items-center space-x-4">
           <form className="hidden lg:flex items-center border border-gray-700 rounded overflow-hidden">
             <input
@@ -97,13 +86,13 @@ export default function Nav() {
               className="px-3 py-1 bg-gray-800 placeholder-gray-400 focus:outline-none"
             />
             <button type="submit" className="px-3">
-              <SearchIcon className="h-5 w-5 text-gray-400" />
+              🔍
             </button>
           </form>
 
           <Link href="/cart">
-            <a className="relative">
-              <ShoppingCartIcon className="h-6 w-6 hover:text-gray-300" />
+            <a className="relative text-2xl hover:text-gray-300">
+              🛒
               <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1">
                 0
               </span>
@@ -114,7 +103,7 @@ export default function Nav() {
             className="md:hidden focus:outline-none"
             onClick={() => setMobileOpen((v) => !v)}
           >
-            {mobileOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+            {mobileOpen ? '✖️' : '☰'}
           </button>
         </div>
       </div>
@@ -137,7 +126,6 @@ export default function Nav() {
                 </ul>
               </li>
             ))}
-            {/* Простий список решти пунктів */}
             <li><Link href="/vinyl"><a className="block py-1">Вініл</a></Link></li>
             <li><Link href="/cd"><a className="block py-1">CD</a></Link></li>
             <li><Link href="/genres"><a className="block py-1">Жанри</a></Link></li>
