@@ -1,67 +1,70 @@
-// store/components/Header.jsx
- 'use client'
-import Link from 'next/link'
-import { useState } from 'react'
-import { SearchIcon, ShoppingCartIcon, ChevronRightIcon } from '@heroicons/react/outline'
+import { Suspense } from "react"
 
-export default function Header() {
-  const [open, setOpen] = useState(false)
+import { listRegions } from "@lib/data/regions"
+import { StoreRegion } from "@medusajs/types"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import CartButton from "@modules/layout/components/cart-button"
+import SideMenu from "@modules/layout/components/side-menu"
 
-  const megaMenu = [ /* … ваша структура */ ]
+export default async function Nav() {
+  const regions = await listRegions().then((regions: StoreRegion[]) => regions)
 
   return (
-    <header className="bg-gray-900 text-white">
-      <div className="container mx-auto flex items-center justify-between px-4 py-3">
-        {/* Логотип */}
-        <Link href="/"><a><img src="/logo.svg" className="h-8" /></a></Link>
-
-        {/* Mega‑menu для “Магазин” */}
-        <nav className="hidden md:flex items-center space-x-6">
-          <div className="group relative">
-            <Link href="/shop"><a className="flex items-center hover:text-gray-300">
-              Магазин <ChevronRightIcon className="h-4 w-4 ml-1" />
-            </a></Link>
-
-            <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100
-                            absolute left-0 top-full mt-2 w-screen max-w-4xl bg-gray-800 p-6 shadow-lg transition-all">
-              <div className="grid grid-cols-4 gap-6">
-                {megaMenu.map(section => (
-                  <div key={section.heading}>
-                    <h4 className="font-semibold mb-2">{section.heading}</h4>
-                    <ul className="space-y-1">
-                      {section.links.map(link => (
-                        <li key={link.href}>
-                          <Link href={link.href}>
-                            <a className="block hover:text-white">{link.label}</a>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
+    <div className="sticky top-0 inset-x-0 z-50 group">
+      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
+        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
+          <div className="flex-1 basis-0 h-full flex items-center">
+            <div className="h-full">
+              <SideMenu regions={regions} />
             </div>
           </div>
 
-          {/* Інші пункти */}
-          <Link href="/vinyl"><a className="hover:text-gray-300">Вініл</a></Link>
-          <Link href="/cd"><a className="hover:text-gray-300">CD</a></Link>
-          {/* … */}
-        </nav>
+          <div className="flex items-center h-full">
+            <LocalizedClientLink
+              href="/"
+              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+              data-testid="nav-store-link"
+            >
+              Medusa Store
+            </LocalizedClientLink>
+          </div>
 
-        {/* Пошук і кошик */}
-        <div className="flex items-center space-x-4">
-          <form className="hidden lg:flex items-center border border-gray-700 rounded">
-            <input type="text" placeholder="Пошук..." className="px-3 py-1 bg-gray-800 focus:outline-none" />
-            <button><SearchIcon className="h-5 w-5 text-gray-400" /></button>
-          </form>
-          <Link href="/cart">
-            <a className="relative"><ShoppingCartIcon className="h-6 w-6 hover:text-gray-300" />
-              <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1">3</span>
-            </a>
-          </Link>
-        </div>
-      </div>
-    </header>
+          <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
+            <div className="hidden small:flex items-center gap-x-6 h-full">
+              {process.env.NEXT_PUBLIC_FEATURE_SEARCH_ENABLED && (
+                <LocalizedClientLink
+                  className="hover:text-ui-fg-base"
+                  href="/search"
+                  scroll={false}
+                  data-testid="nav-search-link"
+                >
+                  Search
+                </LocalizedClientLink>
+              )}
+              <LocalizedClientLink
+                className="hover:text-ui-fg-base"
+                href="/account"
+                data-testid="nav-account-link"
+              >
+                Account
+              </LocalizedClientLink>
+            </div>
+            <Suspense
+              fallback={
+                <LocalizedClientLink
+                  className="hover:text-ui-fg-base flex gap-2"
+                  href="/cart"
+                  data-testid="nav-cart-link"
+                >
+                  Cart (0)
+                </LocalizedClientLink>
+              }
+            >
+              <CartButton />
+            </Suspense>
+          </div>
+        </nav>
+      </header>
+    </div>
   )
 }
