@@ -130,26 +130,27 @@ const medusaConfig = {
     }] : [])
   ],
   plugins: [
-  ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
-      resolve: '@rokmohar/medusa-plugin-meilisearch',
-      options: {
-        config: {
-          host: MEILISEARCH_HOST,
-          apiKey: MEILISEARCH_ADMIN_KEY
-        },
-        settings: {
-          products: {
-            indexSettings: {
-              searchableAttributes: ['title', 'description', 'variant_sku'],
-              displayedAttributes: ['id', 'title', 'description', 'variant_sku', 'thumbnail', 'handle'],
+    // Якщо налаштований Meilisearch — підключаємо його
+    ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY
+      ? [{
+          resolve: '@rokmohar/medusa-plugin-meilisearch',
+          options: {
+            config: { host: MEILISEARCH_HOST, apiKey: MEILISEARCH_ADMIN_KEY },
+            settings: {
+              products: {
+                indexSettings: {
+                  searchableAttributes: ['title', 'description', 'variant_sku'],
+                  displayedAttributes: ['id', 'title', 'description', 'variant_sku', 'thumbnail', 'handle'],
+                },
+                primaryKey: 'id',
+              },
             },
-            primaryKey: 'id',
-          }
-        }
-      }
-    }] : [])
-  ]
-};
+          },
+        }]
+      : []),
+    // А ось тут додаємо shipping‑profiles плагін
+    '@medusajs/medusa-plugin-shipping-profiles',
+  ],
 
 console.log(JSON.stringify(medusaConfig, null, 2));
 export default defineConfig(medusaConfig);
