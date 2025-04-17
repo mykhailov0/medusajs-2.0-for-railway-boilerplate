@@ -10,26 +10,25 @@ export default function Nav() {
     {
       heading: 'Вінілові платівки',
       links: [
-        { label: 'Вінілові платівки', href: '/shop/vinyl' },
-        { label: 'CD‑диски',        href: '/shop/cd' },
-        { label: 'Готові комплекти', href: '/shop/sets' },
+        { label: 'Вінілові платівки', href: '/categories/vinyl' },
+        { label: 'CD‑диски',        href: '/categories/cd' },
+        { label: 'Готові комплекти', href: '/categories/sets' },
       ],
     },
     {
       heading: 'Огляд',
       links: [
-        { label: 'Виконавець',         href: '/shop/artists' },
-        { label: 'Жанри',              href: '/shop/genres' },
-        { label: 'Нові надходження',   href: '/shop/new' },
-        { label: 'Популярні товари',   href: '/shop/popular' },
-        { label: 'Акційні пропозиції', href: '/shop/sale' },
-        { label: 'Послуги',            href: '/shop/services' },
+        { label: 'Виконавець',         href: '/categories/artists' },
+        { label: 'Жанри',              href: '/categories/genres' },
+        { label: 'Нові надходження',   href: '/categories/new' },
+        { label: 'Популярні товари',   href: '/categories/popular' },
+        { label: 'Акційні пропозиції', href: '/categories/sale' },
+        { label: 'Послуги',            href: '/categories/services' },
       ],
     },
   ]
-
   return (
-    <header className="bg-gray-800 text-white">
+    <header className="bg-[#34373F] text-white">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/">
@@ -46,9 +45,9 @@ export default function Nav() {
               </a>
             </Link>
 
-            {/* Mega-menu panel */}
-            <div className="absolute inset-x-0 top-full mt-0 hidden bg-gray-800 group-hover:block z-10">
-              <div className="container mx-auto px-6 py-8 grid grid-cols-3 gap-8">
+            {/* Mega-menu panel constrained by container width */}
+            <div className="absolute top-full mt-0 hidden group-hover:block z-10">
+              <div className="container mx-auto px-6 py-8 grid grid-cols-3 gap-8 bg-[#34373F] rounded-b">
                 {megaMenu.map(section => (
                   <div key={section.heading}>
                     <h4 className="font-semibold mb-2">{section.heading}</h4>
@@ -84,7 +83,7 @@ export default function Nav() {
             <input
               type="text"
               placeholder="Пошук..."
-              className="w-full h-full bg-gray-800 placeholder-[#585A5F] text-sm focus:outline-none px-[10px] py-[6px]"
+              className="w-full h-full bg-[#34373F] placeholder-[#585A5F] text-sm focus:outline-none px-[10px] py-[6px]"
             />
             <button type="submit" className="flex items-center justify-center px-[10px] py-[6px]">
               <img src="/icons/search.svg" alt="Search" className="h-[18px] w-[18px]"/>
@@ -92,25 +91,18 @@ export default function Nav() {
           </form>
 
           {/* Login link */}
-          <Link href="/login">
-            <a className="hidden lg:inline hover:text-gray-300 text-sm">Увійти</a>
-          </Link>
+          <Link href="/login"><a className="hidden lg:inline hover:text-gray-300 text-sm">Увійти</a></Link>
 
           {/* Cart icon */}
           <Link href="/cart">
             <a className="relative hover:text-gray-300">
               <img src="/icons/cart.svg" alt="Cart" className="h-6 w-6"/>
-              <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1">
-                0
-              </span>
+              <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1">0</span>
             </a>
           </Link>
 
           {/* Mobile menu toggle */}
-          <button
-            className="md:hidden focus:outline-none"
-            onClick={() => setMobileOpen(v => !v)}
-          >
+          <button className="md:hidden focus:outline-none" onClick={() => setMobileOpen(v => !v)}>
             <img
               src={mobileOpen ? '/icons/close.svg' : '/icons/menu.svg'}
               alt="Toggle menu"
@@ -122,7 +114,7 @@ export default function Nav() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <nav className="md:hidden bg-gray-800">
+        <nav className="md:hidden bg-[#34373F]">
           <ul className="p-4 space-y-4">
             {megaMenu.map(section => (
               <li key={section.heading}>
@@ -148,5 +140,3 @@ export default function Nav() {
         </nav>
       )}
     </header>
-  )
-}
