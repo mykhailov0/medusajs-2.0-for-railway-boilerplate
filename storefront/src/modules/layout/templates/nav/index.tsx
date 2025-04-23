@@ -8,21 +8,23 @@ const navItems = [
   {
     label: "МАГАЗИН",
     href: "/catalog",
-    submenu: { columns: [
-      [
-        { label: "ВІНІЛОВІ ПЛАТІВКИ", href: "/catalog/vinyl" },
-        { label: "CD-ДИСКИ", href: "/catalog/cd" },
-        { label: "ГОТОВІ КОМПЛЕКТИ", href: "/catalog/kits" },
+    submenu: {
+      columns: [
+        [
+          { label: "ВІНІЛОВІ ПЛАТІВКИ", href: "/catalog/vinyl" },
+          { label: "CD-ДИСКИ", href: "/catalog/cd" },
+          { label: "ГОТОВІ КОМПЛЕКТИ", href: "/catalog/kits" },
+        ],
+        [
+          { label: "ВИКОНАВЕЦЬ", href: "/catalog/artist" },
+          { label: "ЖАНРИ", href: "/catalog/genres" },
+          { label: "НОВІ НАДХОДЖЕННЯ", href: "/catalog/new" },
+          { label: "ПОПУЛЯРНІ ТОВАРИ", href: "/catalog/popular" },
+          { label: "АКЦІЙНІ ПРОПОЗИЦІЇ", href: "/catalog/sale" },
+          { label: "ПОСЛУГИ", href: "/catalog/services" },
+        ],
       ],
-      [
-        { label: "ВИКОНАВЕЦЬ", href: "/catalog/artist" },
-        { label: "ЖАНРИ", href: "/catalog/genres" },
-        { label: "НОВІ НАДХОДЖЕННЯ", href: "/catalog/new" },
-        { label: "ПОПУЛЯРНІ ТОВАРИ", href: "/catalog/popular" },
-        { label: "АКЦІЙНІ ПРОПОЗИЦІЇ", href: "/catalog/sale" },
-        { label: "ПОСЛУГИ", href: "/catalog/services" },
-      ],
-    ] },
+    },
   },
   { label: "ВІНІЛ", href: "/vinyl" },
   { label: "CD", href: "/cd" },
@@ -47,9 +49,8 @@ export default function Header() {
     const handler = setTimeout(async () => {
       try {
         const hostEnv = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!;
-        const host = hostEnv.startsWith('http') ? hostEnv : `https://${hostEnv}`;
-        // support both public and non-public API key env vars
-        const apiKey = process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY || process.env.MEILISEARCH_API_KEY!;
+        const host = hostEnv.startsWith("http") ? hostEnv : `https://${hostEnv}`;
+        const apiKey = process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY!;
         const indexName = process.env.NEXT_PUBLIC_INDEX_NAME!;
         const client = new MeiliSearch({ host, apiKey });
         const index = client.index(indexName);
@@ -75,14 +76,12 @@ export default function Header() {
   return (
     <header className="fixed top-0 w-full bg-[#34373F] text-white z-50">
       <div className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between relative">
-        {/* Logo */}
         <Link href="/">
           <a className="flex items-center">
             <img src="/logo.svg" alt="OdesaDisc" className="h-8 w-auto" />
           </a>
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center space-x-4">
           {navItems.map(item => (
             <div
@@ -93,15 +92,24 @@ export default function Header() {
               <Link href={item.href}>
                 <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
                   <span>{item.label}</span>
-                  {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />}
+                  {item.submenu && (
+                    <img
+                      src="/icons/chevron-down.svg"
+                      alt="dropdown"
+                      className="ml-1 h-4 w-4"
+                    />
+                  )}
                 </a>
               </Link>
             </div>
           ))}
 
-          {/* Search Field */}
           <div className="relative" ref={containerRef}>
-            <img src="/icons/search.svg" alt="Пошук" className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
+            <img
+              src="/icons/search.svg"
+              alt="search"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5"
+            />
             <input
               type="text"
               placeholder="Пошук"
@@ -114,7 +122,10 @@ export default function Header() {
               <div className="absolute left-0 right-0 bg-white text-black rounded-md shadow-lg max-h-60 overflow-auto z-20">
                 {results.map(hit => (
                   <Link href={`/product/${hit.id}`} key={hit.id}>
-                    <a onClick={() => setShowResults(false)} className="block px-4 py-2 hover:bg-gray-100 transition">
+                    <a
+                      onClick={() => setShowResults(false)}
+                      className="block px-4 py-2 hover:bg-gray-100 transition"
+                    >
                       {hit.title}
                     </a>
                   </Link>
@@ -123,44 +134,63 @@ export default function Header() {
             )}
           </div>
 
-          {/* User and Cart Actions */}
           <Link href="/auth/login">
-            <a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">Увійти</a>
+            <a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
+              Увійти
+            </a>
           </Link>
           <Link href="/cart">
             <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
-              <img src="/icons/cart.svg" alt="Кошик" className="h-5 w-5" />
+              <img src="/icons/cart.svg" alt="cart" className="h-5 w-5" />
             </a>
           </Link>
         </div>
 
-        {/* Full-width Dropdown for "МАГАЗИН" */}
         {openMenu === "МАГАЗИН" && (
           <div className="absolute top-full left-0 right-0 bg-[#34373F] shadow-lg p-6 grid grid-cols-2 gap-8 z-40">
-            {navItems.find(i => i.label === "МАГАЗИН")?.submenu.columns.map((col, idx) => (
-              <ul key={idx} className="space-y-3">
-                {col.map(sub => (
-                  <li key={sub.label}>
-                    <Link href={sub.href}>
-                      <a className="block px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
-                        {sub.label}
-                      </a>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ))}
+            {navItems
+              .find(i => i.label === "МАГАЗИН")!
+              .submenu.columns.map((col, idx) => (
+                <ul key={idx} className="space-y-3">
+                  {col.map(sub => (
+                    <li key={sub.label}>
+                      <Link href={sub.href}>
+                        <a className="block px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
+                          {sub.label}
+                        </a>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ))}
           </div>
         )}
 
-        {/* Mobile Toggle */}
-        <button className="lg:hidden focus:outline-none" aria-label="Toggle menu" onClick={() => setMobileOpen(!mobileOpen)}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+        <button
+          className="lg:hidden focus:outline-none"
+          aria-label="Toggle menu"
+          onClick={() => setMobileOpen(!mobileOpen)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d={
+                mobileOpen
+                  ? "M6 18L18 6M6 6l12 12"
+                  : "M4 6h16M4 12h16M4 18h16"
+              }
+            />
           </svg>
         </button>
 
-        {/* Mobile Menu */}
         {mobileOpen && (
           <div className="lg:hidden absolute top-full left-0 w-full bg-[#34373F] text-white shadow-md p-4 space-y-4">
             {navItems.map(item => (
@@ -168,14 +198,22 @@ export default function Header() {
                 <Link href={item.href}>
                   <a className="flex justify-between items-center py-2 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">
                     {item.label}
-                    {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="h-4 w-4" />}
+                    {item.submenu && (
+                      <img
+                        src="/icons/chevron-down.svg"
+                        alt="dropdown"
+                        className="h-4 w-4"
+                      />
+                    )}
                   </a>
                 </Link>
                 {item.submenu && (
                   <div className="pl-4">
                     {item.submenu.columns.flat().map(sub => (
                       <Link key={sub.label} href={sub.href}>
-                        <a className="block py-1 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">{sub.label}</a>
+                        <a className="block py-1 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">
+                          {sub.label}
+                        </a>
                       </Link>
                     ))}
                   </div>
