@@ -42,8 +42,8 @@ export default function Header() {
 
   const headerRef = useRef<HTMLDivElement>(null);
   const shopRef = useRef<HTMLDivElement>(null);
-  const [submenuLeft, setSubmenuLeft] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [submenuLeft, setSubmenuLeft] = useState<number>(0);
 
   // Fetch search results
   useEffect(() => {
@@ -79,13 +79,14 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // Compute submenu left offset relative to header container padding
+  // Compute offset for dropdown under "МАГАЗИН"
   useEffect(() => {
     if (openMenu === "МАГАЗИН" && headerRef.current && shopRef.current) {
       const headerRect = headerRef.current.getBoundingClientRect();
       const shopRect = shopRef.current.getBoundingClientRect();
-      // subtract header padding-left (24px)
-      setSubmenuLeft(shopRect.left - headerRect.left - 24);
+      // account for header horizontal padding (px-6 => 24px)
+      const offset = shopRect.left - headerRect.left - 24;
+      setSubmenuLeft(offset);
     }
   }, [openMenu]);
 
@@ -113,9 +114,7 @@ export default function Header() {
                 <Link href={item.href}>
                   <a className={`flex items-center px-2 py-1 rounded transition ${openMenu === item.label ? 'bg-[#DD6719]' : 'hover:bg-[#DD6719]'}`}> 
                     {item.label}
-                    {item.submenu && (
-                      <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />
-                    )}
+                    {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />}
                   </a>
                 </Link>
               </div>
@@ -150,17 +149,20 @@ export default function Header() {
           <Link href="/auth/login"><a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">Увійти</a></Link>
           <Link href="/cart"><a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white"><img src="/icons/cart.svg" alt="" className="h-5 w-5"/></a></Link>
         </div>
-
       </div>
 
+      {/* Dropdown */}
       {currentSubmenu && (
         <div
           className="absolute top-full left-0 right-0 bg-[#34373F]"
           onMouseEnter={() => setOpenMenu("МАГАЗИН")}
           onMouseLeave={() => setOpenMenu(null)}
         >
-          <div className="mx-auto max-w-[1440px] px-6 py-6">
-            <div className="grid grid-cols-2 gap-8" style={{ marginLeft: submenuLeft }}>
+          <div className="relative mx-auto max-w-[1440px] px-6 py-6">
+            <div
+              className="absolute top-0 grid grid-cols-2 gap-8"
+              style={{ left: submenuLeft }}
+            >
               {currentSubmenu.columns.map((col, idx) => (
                 <ul key={idx} className="space-y-3">
                   {col.map(sub => (
@@ -178,7 +180,6 @@ export default function Header() {
           </div>
         </div>
       )}
-
     </header>
   );
 }
