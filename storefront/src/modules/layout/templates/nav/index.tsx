@@ -35,12 +35,11 @@ const navItems = [
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
 
-  const headerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const shopRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [submenuLeft, setSubmenuLeft] = useState<number>(0);
@@ -81,10 +80,10 @@ export default function Header() {
 
   // Compute offset for dropdown under "МАГАЗИН"
   useEffect(() => {
-    if (openMenu === "МАГАЗИН" && headerRef.current && shopRef.current) {
-      const headerRect = headerRef.current.getBoundingClientRect();
+    if (openMenu === "МАГАЗИН" && wrapperRef.current && shopRef.current) {
+      const wrapperRect = wrapperRef.current.getBoundingClientRect();
       const shopRect = shopRef.current.getBoundingClientRect();
-      setSubmenuLeft(shopRect.left - headerRect.left);
+      setSubmenuLeft(shopRect.left - wrapperRect.left);
     }
   }, [openMenu]);
 
@@ -92,11 +91,13 @@ export default function Header() {
 
   return (
     <header
-      ref={headerRef}
       className="fixed top-0 w-full bg-[#34373F] text-white z-50"
       onMouseLeave={() => setOpenMenu(null)}
     >
-      <div className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between">
+      <div
+        ref={wrapperRef}
+        className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between relative"
+      >
         {/* Logo + Nav */}
         <div className="flex items-center space-x-6">
           <Link href="/">
@@ -109,12 +110,21 @@ export default function Header() {
               <div
                 key={item.label}
                 ref={item.label === "МАГАЗИН" ? shopRef : null}
-                onMouseEnter={() => setOpenMenu(item.label)}
+                onMouseEnter={() => item.submenu && setOpenMenu(item.label)}
               >
-                <Link href={item.href}>
-                  <a className={`flex items-center px-2 py-1 rounded transition ${openMenu === item.label ? 'bg-[#DD6719]' : 'hover:bg-[#DD6719]'}`}> 
+                <Link href={item.href}> 
+                  <a
+                    className={`flex items-center px-2 py-1 rounded transition ${
+                      openMenu === item.label ? 'bg-[#DD6719]' : 'hover:bg-[#DD6719]'
+                    }`}>
                     {item.label}
-                    {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />}
+                    {item.submenu && (
+                      <img
+                        src="/icons/chevron-down.svg"
+                        alt=""
+                        className="ml-1 h-4 w-4"
+                      />
+                    )}
                   </a>
                 </Link>
               </div>
@@ -125,12 +135,19 @@ export default function Header() {
         {/* Search + Actions */}
         <div className="flex items-center space-x-4">
           <div className="relative" ref={containerRef}>
-            <img src="/icons/search.svg" alt="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
+            <img
+              src="/icons/search.svg"
+              alt="search"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5"
+            />
             <input
               type="text"
               placeholder="Пошук"
               value={query}
-              onChange={e => { setQuery(e.target.value); setShowResults(true); }}
+              onChange={e => {
+                setQuery(e.target.value);
+                setShowResults(true);
+              }}
               onFocus={() => setShowResults(true)}
               className="bg-[#34373F] placeholder-gray-500 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#DD6719] transition-all w-32 focus:w-64"
             />
@@ -138,7 +155,10 @@ export default function Header() {
               <div className="absolute left-0 right-0 bg-white text-black rounded-md shadow-lg max-h-60 overflow-auto z-20">
                 {results.map(hit => (
                   <Link href={`/products/${hit.handle}`} key={hit.id}>
-                    <a onClick={() => setShowResults(false)} className="block px-4 py-2 hover:bg-gray-100 transition">
+                    <a
+                      onClick={() => setShowResults(false)}
+                      className="block px-4 py-2 hover:bg-gray-100 transition"
+                    >
                       {hit.title}
                     </a>
                   </Link>
@@ -146,10 +166,17 @@ export default function Header() {
               </div>
             )}
           </div>
-          <Link href="/auth/login"><a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">Увійти</a></Link>
-          <Link href="/cart"><a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white"><img src="/icons/cart.svg" alt="" className="h-5 w-5"/></a></Link>
+          <Link href="/auth/login">
+            <a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
+              Увійти
+            </a>
+          </Link>
+          <Link href="/cart">
+            <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
+              <img src="/icons/cart.svg" alt="" className="h-5 w-5" />
+            </a>
+          </Link>
         </div>
-
       </div>
 
       {/* Dropdown */}
