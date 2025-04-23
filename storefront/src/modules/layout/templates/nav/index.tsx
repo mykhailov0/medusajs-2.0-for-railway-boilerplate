@@ -45,6 +45,7 @@ export default function Header() {
   const [submenuLeft, setSubmenuLeft] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Fetch search results
   useEffect(() => {
     if (!query) {
       setResults([]);
@@ -67,6 +68,7 @@ export default function Header() {
     return () => clearTimeout(handler);
   }, [query]);
 
+  // Close search dropdown on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -77,11 +79,13 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  // Compute submenu left offset relative to header container padding
   useEffect(() => {
     if (openMenu === "МАГАЗИН" && headerRef.current && shopRef.current) {
       const headerRect = headerRef.current.getBoundingClientRect();
       const shopRect = shopRef.current.getBoundingClientRect();
-      setSubmenuLeft(shopRect.left - headerRect.left);
+      // subtract header padding-left (24px)
+      setSubmenuLeft(shopRect.left - headerRect.left - 24);
     }
   }, [openMenu]);
 
@@ -89,7 +93,8 @@ export default function Header() {
 
   return (
     <header ref={headerRef} className="fixed top-0 w-full bg-[#34373F] text-white z-50">
-      <div className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between relative">
+      <div className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between">
+        {/* Logo + Nav */}
         <div className="flex items-center space-x-6">
           <Link href="/">
             <a className="flex items-center">
@@ -106,9 +111,11 @@ export default function Header() {
                 onMouseLeave={() => item.submenu && setOpenMenu(null)}
               >
                 <Link href={item.href}>
-                  <a className={`flex items-center px-2 py-1 rounded transition ${openMenu === item.label ? 'bg-[#DD6719]' : 'hover:bg-[#DD6719]'} `}>
-                    <span>{item.label}</span>
-                    {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />}
+                  <a className={`flex items-center px-2 py-1 rounded transition ${openMenu === item.label ? 'bg-[#DD6719]' : 'hover:bg-[#DD6719]'}`}> 
+                    {item.label}
+                    {item.submenu && (
+                      <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />
+                    )}
                   </a>
                 </Link>
               </div>
@@ -116,16 +123,17 @@ export default function Header() {
           </nav>
         </div>
 
+        {/* Search + Actions */}
         <div className="flex items-center space-x-4">
           <div className="relative" ref={containerRef}>
             <img src="/icons/search.svg" alt="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
             <input
               type="text"
               placeholder="Пошук"
-              className="bg-[#34373F] placeholder-gray-500 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#DD6719] transition-all w-32 focus:w-64"
               value={query}
               onChange={e => { setQuery(e.target.value); setShowResults(true); }}
               onFocus={() => setShowResults(true)}
+              className="bg-[#34373F] placeholder-gray-500 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#DD6719] transition-all w-32 focus:w-64"
             />
             {showResults && results.length > 0 && (
               <div className="absolute left-0 right-0 bg-white text-black rounded-md shadow-lg max-h-60 overflow-auto z-20">
@@ -142,6 +150,7 @@ export default function Header() {
           <Link href="/auth/login"><a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">Увійти</a></Link>
           <Link href="/cart"><a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white"><img src="/icons/cart.svg" alt="" className="h-5 w-5"/></a></Link>
         </div>
+
       </div>
 
       {currentSubmenu && (
@@ -150,11 +159,8 @@ export default function Header() {
           onMouseEnter={() => setOpenMenu("МАГАЗИН")}
           onMouseLeave={() => setOpenMenu(null)}
         >
-          <div className="relative mx-auto max-w-[1440px] px-6 py-6">
-            <div
-              className="absolute top-0 grid grid-cols-2 gap-8"
-              style={{ left: submenuLeft }}
-            >
+          <div className="mx-auto max-w-[1440px] px-6 py-6">
+            <div className="grid grid-cols-2 gap-8" style={{ marginLeft: submenuLeft }}>
               {currentSubmenu.columns.map((col, idx) => (
                 <ul key={idx} className="space-y-3">
                   {col.map(sub => (
@@ -172,6 +178,7 @@ export default function Header() {
           </div>
         </div>
       )}
+
     </header>
   );
 }
