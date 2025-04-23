@@ -40,7 +40,7 @@ export default function Header() {
   const [results, setResults] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
 
-  const headerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const shopRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [submenuLeft, setSubmenuLeft] = useState<number>(0);
@@ -81,20 +81,18 @@ export default function Header() {
 
   // Compute offset for dropdown under "МАГАЗИН"
   useEffect(() => {
-    if (openMenu === "МАГАЗИН" && headerRef.current && shopRef.current) {
-      const headerRect = headerRef.current.getBoundingClientRect();
+    if (openMenu === "МАГАЗИН" && wrapperRef.current && shopRef.current) {
+      const wrapperRect = wrapperRef.current.getBoundingClientRect();
       const shopRect = shopRef.current.getBoundingClientRect();
-      // account for header horizontal padding (px-6 => 24px)
-      const offset = shopRect.left - headerRect.left - 24;
-      setSubmenuLeft(offset);
+      setSubmenuLeft(shopRect.left - wrapperRect.left);
     }
   }, [openMenu]);
 
   const currentSubmenu = navItems.find(i => i.label === openMenu)?.submenu;
 
   return (
-    <header ref={headerRef} className="fixed top-0 w-full bg-[#34373F] text-white z-50">
-      <div className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between">
+    <header className="fixed top-0 w-full bg-[#34373F] text-white z-50">
+      <div ref={wrapperRef} className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between relative">
         {/* Logo + Nav */}
         <div className="flex items-center space-x-6">
           <Link href="/">
@@ -102,24 +100,51 @@ export default function Header() {
               <img src="/logo.svg" alt="OdesaDisc" className="h-8 w-auto" />
             </a>
           </Link>
-          <nav className="hidden lg:flex items-center space-x-4">
-            {navItems.map(item => (
-              <div
-                key={item.label}
-                ref={item.label === "МАГАЗИН" ? shopRef : null}
-                className="relative"
-                onMouseEnter={() => item.submenu && setOpenMenu(item.label)}
-                onMouseLeave={() => item.submenu && setOpenMenu(null)}
-              >
-                <Link href={item.href}>
-                  <a className={`flex items-center px-2 py-1 rounded transition ${openMenu === item.label ? 'bg-[#DD6719]' : 'hover:bg-[#DD6719]'}`}> 
-                    {item.label}
-                    {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />}
-                  </a>
-                </Link>
+          <div
+            className="relative"
+            onMouseEnter={() => setOpenMenu("МАГАЗИН")}
+            onMouseLeave={() => setOpenMenu(null)}
+          >
+            <nav className="hidden lg:flex items-center space-x-4">
+              {navItems.map(item => (
+                <div
+                  key={item.label}
+                  ref={item.label === "МАГАЗИН" ? shopRef : null}
+                  className="relative"
+                >
+                  <Link href={item.href}>
+                    <a className={`flex items-center px-2 py-1 rounded transition ${openMenu === item.label ? 'bg-[#DD6719]' : 'hover:bg-[#DD6719]'}`}> 
+                      {item.label}
+                      {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />}
+                    </a>
+                  </Link>
+                </div>
+              ))}
+            </nav>
+
+            {/* Dropdown */}
+            {currentSubmenu && (
+              <div className="absolute top-full left-0 right-0 bg-[#34373F]">
+                <div className="relative mx-auto max-w-[1440px] px-6 py-6">
+                  <div className="grid grid-cols-2 gap-8" style={{ marginLeft: submenuLeft }}>
+                    {currentSubmenu.columns.map((col, idx) => (
+                      <ul key={idx} className="space-y-3">
+                        {col.map(sub => (
+                          <li key={sub.label}>
+                            <Link href={sub.href}>
+                              <a className="block px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
+                                {sub.label}
+                              </a>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ))}
+                  </div>
+                </div>
               </div>
-            ))}
-          </nav>
+            )}
+          </div>
         </div>
 
         {/* Search + Actions */}
@@ -150,36 +175,6 @@ export default function Header() {
           <Link href="/cart"><a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white"><img src="/icons/cart.svg" alt="" className="h-5 w-5"/></a></Link>
         </div>
       </div>
-
-      {/* Dropdown */}
-      {currentSubmenu && (
-        <div
-          className="absolute top-full left-0 right-0 bg-[#34373F]"
-          onMouseEnter={() => setOpenMenu("МАГАЗИН")}
-          onMouseLeave={() => setOpenMenu(null)}
-        >
-          <div className="relative mx-auto max-w-[1440px] px-6 py-6">
-            <div
-              className="absolute top-0 grid grid-cols-2 gap-8"
-              style={{ left: submenuLeft }}
-            >
-              {currentSubmenu.columns.map((col, idx) => (
-                <ul key={idx} className="space-y-3">
-                  {col.map(sub => (
-                    <li key={sub.label}>
-                      <Link href={sub.href}>
-                        <a className="block px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
-                          {sub.label}
-                        </a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 }
