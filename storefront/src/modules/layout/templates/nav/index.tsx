@@ -96,11 +96,7 @@ export default function Header() {
                 <a className="flex items-center hover:text-yellow-400 transition">
                   <span>{item.label}</span>
                   {item.submenu && (
-                    <img
-                      src="/icons/chevron-down.svg"
-                      alt=""
-                      className="ml-1 h-4 w-4"
-                    />
+                    <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />
                   )}
                 </a>
               </Link>
@@ -124,13 +120,9 @@ export default function Header() {
             </div>
           ))}
 
-          {/* Search */}
+          {/* Search Field with MeiliSearch */}
           <div className="relative" ref={containerRef}>
-            <img
-              src="/icons/search.svg"
-              alt="Пошук"
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"
-            />
+            <img src="/icons/search.svg" alt="Пошук" className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               type="text"
               placeholder="Пошук"
@@ -154,25 +146,24 @@ export default function Header() {
               </div>
             )}
           </div>
-        </nav>
 
-        {/* Actions */}
-        <div className="hidden lg:flex items-center space-x-4">
+          {/* User and Cart Actions */}
           <Link href="/auth/login">
-            <a className="hover:text-yellow-400 transition flex items-center">
-              <img src="/icons/user.svg" alt="Увійти" className="mr-1 h-5 w-5" /> Увійти
+            <a className="flex items-center hover:text-yellow-400 transition">
+              <img src="/icons/user.svg" alt="Увійти" className="h-5 w-5 mr-1" /> Увійти
             </a>
           </Link>
           <Link href="/cart">
-            <a className="hover:text-yellow-400 transition flex items-center">
+            <a className="flex items-center hover:text-yellow-400 transition">
               <img src="/icons/cart.svg" alt="Кошик" className="h-5 w-5" />
             </a>
           </Link>
-        </div>
+        </nav>
 
         {/* Mobile Toggle */}
         <button
           className="lg:hidden focus:outline-none"
+          aria-label="Toggle menu"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
