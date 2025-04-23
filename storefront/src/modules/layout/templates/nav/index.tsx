@@ -83,7 +83,7 @@ export default function Header() {
     if (openMenu === "МАГАЗИН" && wrapperRef.current && shopRef.current) {
       const wrapperRect = wrapperRef.current.getBoundingClientRect();
       const shopRect = shopRef.current.getBoundingClientRect();
-      setSubmenuLeft(shopRect.left - wrapperRect.left);
+      setSubmenuLeft(shopRect.left - wrapperRect.left - 16);
     }
   }, [openMenu]);
 
@@ -184,7 +184,7 @@ export default function Header() {
         <div className="absolute top-full left-0 right-0 bg-[#34373F]">
           <div className="mx-auto max-w-[1440px] px-6 py-6">
             <div
-              className="grid grid-cols-2 gap-8"
+              className="grid grid-cols-2 gap-4"
               style={{ marginLeft: submenuLeft }}
             >
               {currentSubmenu.columns.map((col, idx) => (
