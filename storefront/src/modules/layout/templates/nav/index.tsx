@@ -45,7 +45,6 @@ export default function Header() {
   const [submenuLeft, setSubmenuLeft] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch search results
   useEffect(() => {
     if (!query) {
       setResults([]);
@@ -53,9 +52,8 @@ export default function Header() {
     }
     const handler = setTimeout(async () => {
       try {
-        const host = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!.startsWith('http')
-          ? process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!
-          : `https://${process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!}`;
+        const hostEnv = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!;
+        const host = hostEnv.startsWith('http') ? hostEnv : `https://${hostEnv}`;
         const apiKey = process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY!;
         const indexName = process.env.NEXT_PUBLIC_INDEX_NAME!;
         const client = new MeiliSearch({ host, apiKey });
@@ -69,7 +67,6 @@ export default function Header() {
     return () => clearTimeout(handler);
   }, [query]);
 
-  // Close search dropdown on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -80,7 +77,6 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // Compute submenu left offset
   useEffect(() => {
     if (openMenu === "МАГАЗИН" && headerRef.current && shopRef.current) {
       const headerRect = headerRef.current.getBoundingClientRect();
@@ -94,7 +90,6 @@ export default function Header() {
   return (
     <header ref={headerRef} className="fixed top-0 w-full bg-[#34373F] text-white z-50">
       <div className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between relative">
-        {/* Left: Logo + Menu */}
         <div className="flex items-center space-x-6">
           <Link href="/">
             <a className="flex items-center">
@@ -113,9 +108,7 @@ export default function Header() {
                 <Link href={item.href}>
                   <a className={`flex items-center px-2 py-1 rounded transition ${openMenu === item.label ? 'bg-[#DD6719]' : 'hover:bg-[#DD6719]'} `}>
                     <span>{item.label}</span>
-                    {item.submenu && (
-                      <img src="/icons/chevron-down.svg" alt="dropdown" className="ml-1 h-4 w-4" />
-                    )}
+                    {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />}
                   </a>
                 </Link>
               </div>
@@ -123,17 +116,16 @@ export default function Header() {
           </nav>
         </div>
 
-        {/* Right: Search + Actions */}
         <div className="flex items-center space-x-4">
           <div className="relative" ref={containerRef}>
             <img src="/icons/search.svg" alt="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
             <input
               type="text"
               placeholder="Пошук"
+              className="bg-[#34373F] placeholder-gray-500 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#DD6719] transition-all w-32 focus:w-64"
               value={query}
               onChange={e => { setQuery(e.target.value); setShowResults(true); }}
               onFocus={() => setShowResults(true)}
-              className="bg-[#34373F] placeholder-gray-500 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#DD6719] transition-all w-32 focus:w-64"
             />
             {showResults && results.length > 0 && (
               <div className="absolute left-0 right-0 bg-white text-black rounded-md shadow-lg max-h-60 overflow-auto z-20">
@@ -147,25 +139,24 @@ export default function Header() {
               </div>
             )}
           </div>
-          <Link href="/auth/login">
-            <a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">Увійти</a>
-          </Link>
-          <Link href="/cart">
-            <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
-              <img src="/icons/cart.svg" alt="cart" className="h-5 w-5" />
-            </a>
-          </Link>
+          <Link href="/auth/login"><a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">Увійти</a></Link>
+          <Link href="/cart"><a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white"><img src="/icons/cart.svg" alt="" className="h-5 w-5"/></a></Link>
         </div>
+      </div>
 
-        {/* Full-width Dropdown for "МАГАЗИН" */}
-        {currentSubmenu && (
-          <div className="absolute top-full left-0 right-0 bg-[#34373F] shadow-lg z-40">
+      {currentSubmenu && (
+        <div
+          className="absolute top-full left-0 right-0 bg-[#34373F]"
+          onMouseEnter={() => setOpenMenu("МАГАЗИН")}
+          onMouseLeave={() => setOpenMenu(null)}
+        >
+          <div className="relative mx-auto max-w-[1440px] px-6 py-6">
             <div
               className="absolute top-0 grid grid-cols-2 gap-8"
-              style={{ left: submenuLeft, width: 'calc(100% - 12px)' }}
+              style={{ left: submenuLeft }}
             >
               {currentSubmenu.columns.map((col, idx) => (
-                <ul key={idx} className="space-y-3 pl-2">
+                <ul key={idx} className="space-y-3">
                   {col.map(sub => (
                     <li key={sub.label}>
                       <Link href={sub.href}>
@@ -179,41 +170,8 @@ export default function Header() {
               ))}
             </div>
           </div>
-        )}
-
-        {/* Mobile Toggle */}
-        <button className="lg:hidden ml-4 focus:outline-none" aria-label="Toggle menu" onClick={() => setMobileOpen(!mobileOpen)}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-          </svg>
-        </button>
-        {mobileOpen && (
-          <div className="lg:hidden absolute top-full left-0 w-full bg-[#34373F] text-white shadow-md p-4 space-y-4">
-            {navItems.map(item => (
-              <div key={item.label}>
-                <Link href={item.href}>
-                  <a className="flex justify-between items-center py-2 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">
-                    {item.label}{item.submenu && <img src="/icons/chevron-down.svg" alt="dropdown" className="h-4 w-4" />}
-                  </a>
-                </Link>
-                {item.submenu && (
-                  <div className="pl-4">
-                    {item.submenu.columns.flat().map(sub => (
-                      <Link key={sub.label} href={sub.href}>
-                        <a className="block py-1 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">{sub.label}</a>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-            <div className="border-t border-gray-700 pt-4 space-y-2">
-              <Link href="/auth/login"><a className="block py-2 hover:bg-[#DD6719] hover:text-white rounded px-2">Увійти</a></Link>
-              <Link href="/cart"><a className="block py-2 hover:bg-[#DD6719] hover:text-white rounded px-2">Кошик</a></Link>
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 }
