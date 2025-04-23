@@ -42,7 +42,6 @@ export default function Header() {
     }
     const handler = setTimeout(async () => {
       try {
-        // Use environment variables
         const hostEnv = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!;
         const host = hostEnv.startsWith('http') ? hostEnv : `https://${hostEnv}`;
         const apiKey = process.env.MEILISEARCH_API_KEY!;
@@ -69,7 +68,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-gray-900 text-white">
+    <header className="fixed top-0 w-full bg-[#34373F] text-white z-50">
       <div className="container mx-auto px-6 py-3 flex items-center justify-between relative">
         {/* Logo */}
         <Link href="/">
@@ -88,25 +87,21 @@ export default function Header() {
               onMouseLeave={() => setOpenMenu(null)}
             >
               <Link href={item.href}>
-                <a className="flex items-center hover:text-yellow-400 transition">
+                <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
                   <span>{item.label}</span>
-                  {item.submenu && (
-                    <img
-                      src="/icons/chevron-down.svg"
-                      alt=""
-                      className="ml-1 h-4 w-4"
-                    />
-                  )}
+                  {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />}
                 </a>
               </Link>
+
+              {/* Full-width Dropdown */}
               {item.submenu && openMenu === item.label && (
-                <div className="absolute top-full left-0 mt-2 bg-gray-800 shadow-lg rounded-lg p-4 grid grid-cols-2 gap-4">
+                <div className="absolute top-full left-0 mt-2 w-full bg-[#34373F] shadow-lg rounded-lg p-6 grid grid-cols-2 gap-8">
                   {item.submenu.columns.map((col, idx) => (
-                    <ul key={idx} className="space-y-2">
+                    <ul key={idx} className="space-y-3">
                       {col.map(sub => (
                         <li key={sub.label}>
                           <Link href={sub.href}>
-                            <a className="block hover:text-yellow-400 transition">
+                            <a className="block px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
                               {sub.label}
                             </a>
                           </Link>
@@ -128,7 +123,7 @@ export default function Header() {
               value={query}
               onChange={e => { setQuery(e.target.value); setShowResults(true); }}
               onFocus={() => setShowResults(true)}
-              className="bg-gray-800 placeholder-gray-500 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-yellow-400 w-64"
+              className="bg-[#34373F] placeholder-gray-500 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#DD6719] w-64"
             />
             {showResults && results.length > 0 && (
               <div className="absolute left-0 right-0 mt-1 bg-white text-black rounded-md shadow-lg max-h-60 overflow-auto z-20">
@@ -145,12 +140,12 @@ export default function Header() {
 
           {/* User and Cart Actions */}
           <Link href="/auth/login">
-            <a className="flex items-center hover:text-yellow-400 transition">
+            <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
               <img src="/icons/user.svg" alt="Увійти" className="h-5 w-5 mr-1" /> Увійти
             </a>
           </Link>
           <Link href="/cart">
-            <a className="flex items-center hover:text-yellow-400 transition">
+            <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
               <img src="/icons/cart.svg" alt="Кошик" className="h-5 w-5" />
             </a>
           </Link>
@@ -169,11 +164,11 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="lg:hidden absolute top-full left-0 w-full bg-gray-900 text-white shadow-md p-4 space-y-4">
+          <div className="lg:hidden absolute top-full left-0 w-full bg-[#34373F] text-white shadow-md p-4 space-y-4">
             {navItems.map(item => (
               <div key={item.label}>
                 <Link href={item.href}>
-                  <a className="flex justify-between items-center py-2 hover:text-yellow-400 transition">
+                  <a className="flex justify-between items-center py-2 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">
                     {item.label}
                     {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="h-4 w-4" />} 
                   </a>
@@ -182,7 +177,7 @@ export default function Header() {
                   <div className="pl-4">
                     {item.submenu.columns.flat().map(sub => (
                       <Link key={sub.label} href={sub.href}>
-                        <a className="block py-1 hover:text-yellow-400 transition">{sub.label}</a>
+                        <a className="block py-1 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">{sub.label}</a>
                       </Link>
                     ))}
                   </div>
@@ -190,8 +185,8 @@ export default function Header() {
               </div>
             ))}
             <div className="border-t border-gray-700 pt-4 space-y-2">
-              <Link href="/auth/login"><a className="block py-2 hover:text-yellow-400">Увійти</a></Link>
-              <Link href="/cart"><a className="block py-2 hover:text-yellow-400">Кошик</a></Link>
+              <Link href="/auth/login"><a className="block py-2 hover:bg-[#DD6719] hover:text-white rounded px-2">Увійти</a></Link>
+              <Link href="/cart"><a className="block py-2 hover:bg-[#DD6719] hover:text-white rounded px-2">Кошик</a></Link>
             </div>
           </div>
         )}
