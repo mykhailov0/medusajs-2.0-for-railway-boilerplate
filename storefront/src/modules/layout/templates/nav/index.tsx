@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { FiChevronDown, FiSearch, FiShoppingCart, FiUser } from "react-icons/fi";
 import { MeiliSearch } from "meilisearch";
 
 const client = new MeiliSearch({
@@ -36,7 +35,7 @@ const navItems = [
   { label: "CD", href: "/cd" },
   { label: "ЖАНРИ", href: "/genres" },
   { label: "ПРО НАС", href: "/about" },
-  { label: "АКЦЇЇ", href: "/promotions" },
+  { label: "АКЦІЇ", href: "/promotions" },
 ];
 
 export default function Header() {
@@ -47,7 +46,6 @@ export default function Header() {
   const [showResults, setShowResults] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Debounced search
   useEffect(() => {
     if (!query) {
       setResults([]);
@@ -65,7 +63,6 @@ export default function Header() {
     return () => clearTimeout(handler);
   }, [query]);
 
-  // Click outside to close results
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -82,7 +79,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/">
           <a className="flex items-center">
-            <img src="public/logo.svg" alt="OdesaDisc" className="h-8 w-auto" />
+            <img src="/assets/logo-white.svg" alt="OdesaDisc" className="h-8 w-auto" />
           </a>
         </Link>
 
@@ -98,10 +95,15 @@ export default function Header() {
               <Link href={item.href}>
                 <a className="flex items-center hover:text-yellow-400 transition">
                   <span>{item.label}</span>
-                  {item.submenu && <FiChevronDown className="ml-1" />}
+                  {item.submenu && (
+                    <img
+                      src="/icons/chevron-down.svg"
+                      alt=""
+                      className="ml-1 h-4 w-4"
+                    />
+                  )}
                 </a>
               </Link>
-              {/* Dropdown */}
               {item.submenu && openMenu === item.label && (
                 <div className="absolute top-full left-0 mt-2 bg-gray-800 shadow-lg rounded-lg p-4 grid grid-cols-2 gap-4">
                   {item.submenu.columns.map((col, idx) => (
@@ -124,7 +126,11 @@ export default function Header() {
 
           {/* Search */}
           <div className="relative" ref={containerRef}>
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <img
+              src="/icons/search.svg"
+              alt="Пошук"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"
+            />
             <input
               type="text"
               placeholder="Пошук"
@@ -154,12 +160,12 @@ export default function Header() {
         <div className="hidden lg:flex items-center space-x-4">
           <Link href="/auth/login">
             <a className="hover:text-yellow-400 transition flex items-center">
-              <FiUser className="mr-1" /> Увійти
+              <img src="/icons/user.svg" alt="Увійти" className="mr-1 h-5 w-5" /> Увійти
             </a>
           </Link>
           <Link href="/cart">
             <a className="hover:text-yellow-400 transition flex items-center">
-              <FiShoppingCart />
+              <img src="/icons/cart.svg" alt="Кошик" className="h-5 w-5" />
             </a>
           </Link>
         </div>
@@ -182,7 +188,9 @@ export default function Header() {
                 <Link href={item.href}>
                   <a className="flex justify-between items-center py-2 hover:text-yellow-400 transition">
                     {item.label}
-                    {item.submenu && <FiChevronDown />}
+                    {item.submenu && (
+                      <img src="/icons/chevron-down.svg" alt="" className="h-4 w-4" />
+                    )}
                   </a>
                 </Link>
                 {item.submenu && (
