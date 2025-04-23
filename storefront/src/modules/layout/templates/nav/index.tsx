@@ -92,24 +92,14 @@ export default function Header() {
               <Link href={item.href}>
                 <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
                   <span>{item.label}</span>
-                  {item.submenu && (
-                    <img
-                      src="/icons/chevron-down.svg"
-                      alt="dropdown"
-                      className="ml-1 h-4 w-4"
-                    />
-                  )}
+                  {item.submenu && <img src="/icons/chevron-down.svg" alt="dropdown" className="ml-1 h-4 w-4" />}
                 </a>
               </Link>
             </div>
           ))}
 
           <div className="relative" ref={containerRef}>
-            <img
-              src="/icons/search.svg"
-              alt="search"
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5"
-            />
+            <img src="/icons/search.svg" alt="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
             <input
               type="text"
               placeholder="Пошук"
@@ -121,11 +111,8 @@ export default function Header() {
             {showResults && results.length > 0 && (
               <div className="absolute left-0 right-0 bg-white text-black rounded-md shadow-lg max-h-60 overflow-auto z-20">
                 {results.map(hit => (
-                  <Link href={`/products/${hit.id}`} key={hit.id}>
-                    <a
-                      onClick={() => setShowResults(false)}
-                      className="block px-4 py-2 hover:bg-gray-100 transition"
-                    >
+                  <Link href={`/products/${hit.handle}`} key={hit.id}>
+                    <a onClick={() => setShowResults(false)} className="block px-4 py-2 hover:bg-gray-100 transition">
                       {hit.title}
                     </a>
                   </Link>
@@ -135,9 +122,7 @@ export default function Header() {
           </div>
 
           <Link href="/auth/login">
-            <a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
-              Увійти
-            </a>
+            <a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">Увійти</a>
           </Link>
           <Link href="/cart">
             <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
@@ -148,46 +133,23 @@ export default function Header() {
 
         {openMenu === "МАГАЗИН" && (
           <div className="absolute top-full left-0 right-0 bg-[#34373F] shadow-lg p-6 grid grid-cols-2 gap-8 z-40">
-            {navItems
-              .find(i => i.label === "МАГАЗИН")!
-              .submenu.columns.map((col, idx) => (
-                <ul key={idx} className="space-y-3">
-                  {col.map(sub => (
-                    <li key={sub.label}>
-                      <Link href={sub.href}>
-                        <a className="block px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
-                          {sub.label}
-                        </a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ))}
+            {navItems.find(i => i.label === "МАГАЗИН")!.submenu.columns.map((col, idx) => (
+              <ul key={idx} className="space-y-3">
+                {col.map(sub => (
+                  <li key={sub.label}>
+                    <Link href={sub.href}>
+                      <a className="block px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">{sub.label}</a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ))}
           </div>
         )}
 
-        <button
-          className="lg:hidden focus:outline-none"
-          aria-label="Toggle menu"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d={
-                mobileOpen
-                  ? "M6 18L18 6M6 6l12 12"
-                  : "M4 6h16M4 12h16M4 18h16"
-              }
-            />
+        <button className="lg:hidden focus:outline-none" aria-label="Toggle menu" onClick={() => setMobileOpen(!mobileOpen)}>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
           </svg>
         </button>
 
@@ -198,22 +160,13 @@ export default function Header() {
                 <Link href={item.href}>
                   <a className="flex justify-between items-center py-2 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">
                     {item.label}
-                    {item.submenu && (
-                      <img
-                        src="/icons/chevron-down.svg"
-                        alt="dropdown"
-                        className="h-4 w-4"
-                      />
-                    )}
-                  </a>
+                    {item.submenu && <img src="/icons/chevron-down.svg" alt="dropdown" className="h-4 w-4" />}                </a>
                 </Link>
                 {item.submenu && (
                   <div className="pl-4">
                     {item.submenu.columns.flat().map(sub => (
                       <Link key={sub.label} href={sub.href}>
-                        <a className="block py-1 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">
-                          {sub.label}
-                        </a>
+                        <a className="block py-1 px-2 rounded transition hover:bg-[#DD6719] hover:text-white">{sub.label}</a>
                       </Link>
                     ))}
                   </div>
