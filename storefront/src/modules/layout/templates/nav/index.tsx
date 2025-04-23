@@ -4,11 +4,6 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { MeiliSearch } from "meilisearch";
 
-const client = new MeiliSearch({
-  host: process.env.NEXT_PUBLIC_MEILI_HOST!,
-  apiKey: process.env.NEXT_PUBLIC_MEILI_KEY!,
-});
-
 const navItems = [
   {
     label: "МАГАЗИН",
@@ -53,6 +48,10 @@ export default function Header() {
     }
     const handler = setTimeout(async () => {
       try {
+        // Ensure host includes protocol
+        const hostEnv = process.env.NEXT_PUBLIC_MEILI_HOST!;
+        const host = hostEnv.startsWith('http') ? hostEnv : `https://${hostEnv}`;
+        const client = new MeiliSearch({ host, apiKey: process.env.NEXT_PUBLIC_MEILI_KEY! });
         const index = client.index("products");
         const res = await index.search(query, { limit: 5 });
         setResults(res.hits as any[]);
@@ -120,7 +119,7 @@ export default function Header() {
             </div>
           ))}
 
-          {/* Search Field with MeiliSearch */}
+          {/* Search Field */}
           <div className="relative" ref={containerRef}>
             <img src="/icons/search.svg" alt="Пошук" className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
