@@ -1,176 +1,96 @@
-'use client'
+import Link from "next/link";
+import { useState } from "react";
 
-import React, { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
+const navItems = [
+  { label: "Каталог", href: "/catalog", submenu: [
+      { label: "Рок", href: "/genre/rock" },
+      { label: "Джаз", href: "/genre/jazz" },
+      { label: "Електронна", href: "/genre/electronic" },
+    ]
+  },
+  { label: "Про нас", href: "/about" },
+  { label: "Контакти", href: "/contact" },
+];
 
-export default function Nav() {
-  const [mobileOpen, setMobileOpen] = useState(false)
-
-  const megaMenu = [
-    {
-      heading: 'Вінілові платівки',
-      links: [
-        { label: 'Вінілові платівки', href: '/categories/vinyl' },
-        { label: 'CD‑диски',        href: '/categories/cd' },
-        { label: 'Готові комплекти', href: '/categories/sets' },
-      ],
-    },
-    {
-      heading: 'Огляд',
-      links: [
-        { label: 'Виконавець',         href: '/categories/artists' },
-        { label: 'Жанри',              href: '/categories/genres' },
-        { label: 'Нові надходження',   href: '/categories/new' },
-        { label: 'Популярні товари',   href: '/categories/popular' },
-        { label: 'Акційні пропозиції', href: '/categories/sale' },
-        { label: 'Послуги',            href: '/categories/services' },
-      ],
-    },
-  ]
+export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-[#34373F] text-white">
-      <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        {/* Logo */}
+    <header className="bg-white shadow-md">
+      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/">
-          <a aria-label="На головну">
-            <Image
-              src="/logo.svg"
-              alt="desadisc logo"
-              width={128}
-              height={32}
-              className="h-8 w-auto"
-            />
+          <a>
+            <img src="/assets/logo.svg" alt="OdesaDisc Logo" className="h-8" />
           </a>
         </Link>
-
-        {/* Desktop navigation */}
-        <nav className="hidden md:flex items-center space-x-8 uppercase text-sm">
-          {/* Mega-menu trigger */}
-          <div className="relative group">
-            <Link href="/shop">
-              <a className="flex items-center hover:text-orange-400 whitespace-nowrap">
-                Магазин <span className="ml-1 text-base">›</span>
-              </a>
-            </Link>
-
-            {/* Mega-menu full-width panel */}
-            <div className="absolute inset-x-0 top-full hidden group-hover:block z-10 bg-[#34373F]">
-              <div className="container mx-auto px-6 py-8 grid grid-cols-3 gap-8">
-                {megaMenu.map(section => (
-                  <div key={section.heading}>
-                    <h4 className="font-semibold mb-2">{section.heading}</h4>
-                    <ul className="space-y-2">
-                      {section.links.map(link => (
-                        <li key={link.href}>
-                          <Link href={link.href}>
-                            <a className="block text-sm hover:text-orange-400 whitespace-nowrap">
-                              {link.label}
-                            </a>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
+        <nav className="hidden lg:flex space-x-8">
+          {navItems.map((item) => (
+            <div key={item.label} className="relative group">
+              <Link href={item.href}>
+                <a
+                  onMouseEnter={() => item.submenu && setIsOpen(true)}
+                  onMouseLeave={() => item.submenu && setIsOpen(false)}
+                  className="flex items-center hover:text-blue-600 transition"
+                >
+                  {item.label}
+                  {item.submenu && <span className="ml-1">▼</span>}
+                </a>
+              </Link>
+              {item.submenu && isOpen && (
+                <div
+                  onMouseEnter={() => setIsOpen(true)}
+                  onMouseLeave={() => setIsOpen(false)}
+                  className="absolute top-full mt-2 bg-white shadow-lg rounded-lg py-2"
+                >
+                  {item.submenu.map((sub) => (
+                    <Link key={sub.label} href={sub.href}>
+                      <a className="block px-4 py-2 hover:bg-gray-100 transition">
+                        {sub.label}
+                      </a>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-
-          {/* Other navigation items */}
-          <Link href="/vinyl"><a className="hover:text-gray-300">Вініл</a></Link>
-          <Link href="/cd"><a className="hover:text-gray-300">CD</a></Link>
-          <Link href="/genres"><a className="hover:text-gray-300">Жанри</a></Link>
-          <Link href="/about"><a className="hover:text-gray-300">Про нас</a></Link>
-          <Link href="/sale"><a className="hover:text-gray-300">Акції</a></Link>
+          ))}
         </nav>
-
-        {/* Search / Login / Cart / Mobile toggle */}
         <div className="flex items-center space-x-4">
-          {/* Search form */}
-          <form className="hidden lg:flex items-center border border-[#585A5F] rounded-full w-[302px] h-[40px] overflow-hidden">
-            <input
-              type="text"
-              placeholder="Пошук..."
-              aria-label="Пошук по сайту"
-              className="w-full h-full bg-[#34373F] placeholder-[#585A5F] text-sm focus:outline-none px-[10px] py-[6px]"
-            />
-            <button
-              type="submit"
-              aria-label="Почати пошук"
-              className="flex items-center justify-center px-[10px] py-[6px]"
-            >
-              <Image
-                src="/icons/search.svg"
-                alt="icon search"
-                width={18}
-                height={18}
-              />
-            </button>
-          </form>
-
-          {/* Login link */}
-          <Link href="/login">
-            <a className="hidden lg:inline hover:text-gray-300 text-sm">Увійти</a>
-          </Link>
-
-          {/* Cart icon */}
           <Link href="/cart">
-            <a className="relative hover:text-gray-300" aria-label="Перейти до кошика">
-              <Image
-                src="/icons/cart.svg"
-                alt="icon cart"
-                width={24}
-                height={24}
-              />
-              <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1">0</span>
+            <a className="flex items-center hover:text-blue-600 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.293-2.586M7 13l1.293 2.586M17 13l1.293-2.586M17 13l-1.293 2.586M6 21a1 1 0 100-2 1 1 0 000 2zm12 0a1 1 0 100-2 1 1 0 000 2z" />
+              </svg>
             </a>
           </Link>
-
-          {/* Mobile menu toggle */}
-          <button
-            className="md:hidden focus:outline-none"
-            onClick={() => setMobileOpen(v => !v)}
-            aria-label={mobileOpen ? 'Закрити меню' : 'Відкрити меню'}
-          >
-            <Image
-              src={mobileOpen ? '/icons/close.svg' : '/icons/menu.svg'}
-              alt="icon menu toggle"
-              width={24}
-              height={24}
-            />
-          </button>
+          <Link href="/auth/login">
+            <a className="px-4 py-2 border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition">
+              Увійти
+            </a>
+          </Link>
         </div>
+        <button className="lg:hidden" onClick={() => setIsOpen(!isOpen)}>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        {isOpen && (
+          <div className="lg:hidden absolute top-full left-0 w-full bg-white shadow-md py-4">
+            <nav className="flex flex-col space-y-2 px-6">
+              {navItems.map((item) => (
+                <Link key={item.label} href={item.href}>
+                  <a className="block py-2 hover:text-blue-600 transition">{item.label}</a>
+                </Link>
+              ))}
+              <Link href="/cart">
+                <a className="block py-2 hover:text-blue-600 transition">Кошик</a>
+              </Link>
+              <Link href="/auth/login">
+                <a className="block py-2 hover:text-blue-600 transition">Увійти</a>
+              </Link>
+            </nav>
+          </div>
+        )}
       </div>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <nav className="md:hidden bg-[#34373F]">
-          <ul className="p-4 space-y-4">
-            {megaMenu.map(section => (
-              <li key={section.heading}>
-                <p className="font-semibold">{section.heading}</p>
-                <ul className="pl-4 mt-2 space-y-1">
-                  {section.links.map(link => (
-                    <li key={link.href}>
-                      <Link href={link.href}>
-                        <a className="block hover:text-orange-400">{link.label}</a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-            {/* repeat other items */}
-            <li><Link href="/vinyl"><a className="block hover:text-gray-300">Вініл</a></Link></li>
-            <li><Link href="/cd"><a className="block hover:text-gray-300">CD</a></Link></li>
-            <li><Link href="/genres"><a className="block hover:text-gray-300">Жанри</a></Link></li>
-            <li><Link href="/about"><a className="block hover:text-gray-300">Про нас</a></Link></li>
-            <li><Link href="/sale"><a className="block hover:text-gray-300">Акції</a></Link></li>
-          </ul>
-        </nav>
-      )}
     </header>
-  )
+  );
 }
