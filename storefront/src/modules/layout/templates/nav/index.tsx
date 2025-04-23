@@ -5,21 +5,27 @@ import { useState, useEffect, useRef } from "react";
 import { MeiliSearch } from "meilisearch";
 
 const navItems = [
-  { label: "МАГАЗИН", href: "/catalog", submenu: { columns: [
-      [
-        { label: "ВІНІЛОВІ ПЛАТІВКИ", href: "/catalog/vinyl" },
-        { label: "CD-ДИСКИ", href: "/catalog/cd" },
-        { label: "ГОТОВІ КОМПЛЕКТИ", href: "/catalog/kits" },
+  {
+    label: "МАГАЗИН",
+    href: "/catalog",
+    submenu: {
+      columns: [
+        [
+          { label: "ВІНІЛОВІ ПЛАТІВКИ", href: "/catalog/vinyl" },
+          { label: "CD-ДИСКИ", href: "/catalog/cd" },
+          { label: "ГОТОВІ КОМПЛЕКТИ", href: "/catalog/kits" },
+        ],
+        [
+          { label: "ВИКОНАВЕЦЬ", href: "/catalog/artist" },
+          { label: "ЖАНРИ", href: "/catalog/genres" },
+          { label: "НОВІ НАДХОДЖЕННЯ", href: "/catalog/new" },
+          { label: "ПОПУЛЯРНІ ТОВАРИ", href: "/catalog/popular" },
+          { label: "АКЦІЙНІ ПРОПОЗИЦІЇ", href: "/catalog/sale" },
+          { label: "ПОСЛУГИ", href: "/catalog/services" },
+        ],
       ],
-      [
-        { label: "ВИКОНАВЕЦЬ", href: "/catalog/artist" },
-        { label: "ЖАНРИ", href: "/catalog/genres" },
-        { label: "НОВІ НАДХОДЖЕННЯ", href: "/catalog/new" },
-        { label: "ПОПУЛЯРНІ ТОВАРИ", href: "/catalog/popular" },
-        { label: "АКЦІЙНІ ПРОПОЗИЦІЇ", href: "/catalog/sale" },
-        { label: "ПОСЛУГИ", href: "/catalog/services" },
-      ],
-    ] } },
+    },
+  },
   { label: "ВІНІЛ", href: "/vinyl" },
   { label: "CD", href: "/cd" },
   { label: "ЖАНРИ", href: "/genres" },
@@ -44,7 +50,7 @@ export default function Header() {
       try {
         const hostEnv = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!;
         const host = hostEnv.startsWith('http') ? hostEnv : `https://${hostEnv}`;
-        const apiKey = process.env.MEILISEARCH_API_KEY!;
+        const apiKey = process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY!;
         const indexName = process.env.NEXT_PUBLIC_INDEX_NAME!;
         const client = new MeiliSearch({ host, apiKey });
         const index = client.index(indexName);
@@ -73,16 +79,15 @@ export default function Header() {
         {/* Logo */}
         <Link href="/">
           <a className="flex items-center">
-            <img src="/assets/logo-white.svg" alt="OdesaDisc" className="h-8 w-auto" />
+            <img src="/logo.svg" alt="OdesaDisc" className="h-8 w-auto" />
           </a>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center space-x-6">
+        <div className="hidden lg:flex items-center space-x-6">
           {navItems.map(item => (
             <div
               key={item.label}
-              className="relative"
               onMouseEnter={() => item.submenu && setOpenMenu(item.label)}
               onMouseLeave={() => setOpenMenu(null)}
             >
@@ -92,25 +97,6 @@ export default function Header() {
                   {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />}
                 </a>
               </Link>
-
-              {/* Full-width Dropdown */}
-              {item.submenu && openMenu === item.label && (
-                <div className="absolute top-full left-0 mt-2 w-full bg-[#34373F] shadow-lg rounded-lg p-6 grid grid-cols-2 gap-8">
-                  {item.submenu.columns.map((col, idx) => (
-                    <ul key={idx} className="space-y-3">
-                      {col.map(sub => (
-                        <li key={sub.label}>
-                          <Link href={sub.href}>
-                            <a className="block px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
-                              {sub.label}
-                            </a>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  ))}
-                </div>
-              )}
             </div>
           ))}
 
@@ -138,10 +124,10 @@ export default function Header() {
             )}
           </div>
 
-          {/* User and Cart Actions */}
+          {/* User and Cart */}
           <Link href="/auth/login">
             <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
-              <img src="/icons/user.svg" alt="Увійти" className="h-5 w-5 mr-1" /> Увійти
+              Увійти
             </a>
           </Link>
           <Link href="/cart">
@@ -149,7 +135,26 @@ export default function Header() {
               <img src="/icons/cart.svg" alt="Кошик" className="h-5 w-5" />
             </a>
           </Link>
-        </nav>
+        </div>
+
+        {/* Dropdown Full Width */}
+        {openMenu === "МАГАЗИН" && (
+          <div className="absolute top-full left-0 right-0 mt-2 bg-[#34373F] shadow-lg p-6 grid grid-cols-2 gap-8 z-40">
+            {navItems.find(i => i.label === "МАГАЗИН")?.submenu.columns.map((col, idx) => (
+              <ul key={idx} className="space-y-3">
+                {col.map(sub => (
+                  <li key={sub.label}>
+                    <Link href={sub.href}>
+                      <a className="block px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
+                        {sub.label}
+                      </a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        )}
 
         {/* Mobile Toggle */}
         <button
