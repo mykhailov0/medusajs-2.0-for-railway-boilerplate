@@ -39,8 +39,13 @@ export default function Header() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
+
+  const headerRef = useRef<HTMLDivElement>(null);
+  const shopRef = useRef<HTMLDivElement>(null);
+  const [submenuLeft, setSubmenuLeft] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Fetch search results
   useEffect(() => {
     if (!query) {
       setResults([]);
@@ -48,8 +53,9 @@ export default function Header() {
     }
     const handler = setTimeout(async () => {
       try {
-        const hostEnv = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!;
-        const host = hostEnv.startsWith('http') ? hostEnv : `https://${hostEnv}`;
+        const host = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!.startsWith('http')
+          ? process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!
+          : `https://${process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!}`;
         const apiKey = process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY!;
         const indexName = process.env.NEXT_PUBLIC_INDEX_NAME!;
         const client = new MeiliSearch({ host, apiKey });
@@ -63,6 +69,7 @@ export default function Header() {
     return () => clearTimeout(handler);
   }, [query]);
 
+  // Close search dropdown on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -73,10 +80,19 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  // Compute submenu left offset
+  useEffect(() => {
+    if (openMenu === "МАГАЗИН" && headerRef.current && shopRef.current) {
+      const headerRect = headerRef.current.getBoundingClientRect();
+      const shopRect = shopRef.current.getBoundingClientRect();
+      setSubmenuLeft(shopRect.left - headerRect.left);
+    }
+  }, [openMenu]);
+
   const currentSubmenu = navItems.find(i => i.label === openMenu)?.submenu;
 
   return (
-    <header className="fixed top-0 w-full bg-[#34373F] text-white z-50">
+    <header ref={headerRef} className="fixed top-0 w-full bg-[#34373F] text-white z-50">
       <div className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between relative">
         {/* Left: Logo + Menu */}
         <div className="flex items-center space-x-6">
@@ -89,6 +105,7 @@ export default function Header() {
             {navItems.map(item => (
               <div
                 key={item.label}
+                ref={item.label === "МАГАЗИН" ? shopRef : null}
                 className="relative"
                 onMouseEnter={() => item.submenu && setOpenMenu(item.label)}
                 onMouseLeave={() => item.submenu && setOpenMenu(null)}
@@ -142,14 +159,13 @@ export default function Header() {
 
         {/* Full-width Dropdown for "МАГАЗИН" */}
         {currentSubmenu && (
-          <div
-            className="absolute top-full left-0 right-0 bg-[#34373F] shadow-lg z-40"
-            onMouseEnter={() => setOpenMenu("МАГАЗИН")}
-            onMouseLeave={() => setOpenMenu(null)}
-          >
-            <div className="mx-auto max-w-[1440px] px-6 py-6 grid grid-cols-2 gap-8">
+          <div className="absolute top-full left-0 right-0 bg-[#34373F] shadow-lg z-40">
+            <div
+              className="absolute top-0 grid grid-cols-2 gap-8"
+              style={{ left: submenuLeft, width: 'calc(100% - 12px)' }}
+            >
               {currentSubmenu.columns.map((col, idx) => (
-                <ul key={idx} className="space-y-3">
+                <ul key={idx} className="space-y-3 pl-2">
                   {col.map(sub => (
                     <li key={sub.label}>
                       <Link href={sub.href}>
