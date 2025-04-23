@@ -49,7 +49,7 @@ export default function Header() {
     const handler = setTimeout(async () => {
       try {
         const hostEnv = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!;
-        const host = hostEnv.startsWith("http") ? hostEnv : `https://${hostEnv}`;
+        const host = hostEnv.startsWith('http') ? hostEnv : `https://${hostEnv}`;
         const apiKey = process.env.NEXT_PUBLIC_MEILISEARCH_API_KEY!;
         const indexName = process.env.NEXT_PUBLIC_INDEX_NAME!;
         const client = new MeiliSearch({ host, apiKey });
@@ -121,7 +121,7 @@ export default function Header() {
             {showResults && results.length > 0 && (
               <div className="absolute left-0 right-0 bg-white text-black rounded-md shadow-lg max-h-60 overflow-auto z-20">
                 {results.map(hit => (
-                  <Link href={`/product/${hit.id}`} key={hit.id}>
+                  <Link href={`/products/${hit.id}`} key={hit.id}>
                     <a
                       onClick={() => setShowResults(false)}
                       className="block px-4 py-2 hover:bg-gray-100 transition"
