@@ -5,27 +5,21 @@ import { useState, useEffect, useRef } from "react";
 import { MeiliSearch } from "meilisearch";
 
 const navItems = [
-  {
-    label: "МАГАЗИН",
-    href: "/catalog",
-    submenu: {
-      columns: [
-        [
-          { label: "ВІНІЛОВІ ПЛАТІВКИ", href: "/catalog/vinyl" },
-          { label: "CD-ДИСКИ", href: "/catalog/cd" },
-          { label: "ГОТОВІ КОМПЛЕКТИ", href: "/catalog/kits" },
-        ],
-        [
-          { label: "ВИКОНАВЕЦЬ", href: "/catalog/artist" },
-          { label: "ЖАНРИ", href: "/catalog/genres" },
-          { label: "НОВІ НАДХОДЖЕННЯ", href: "/catalog/new" },
-          { label: "ПОПУЛЯРНІ ТОВАРИ", href: "/catalog/popular" },
-          { label: "АКЦІЙНІ ПРОПОЗИЦІЇ", href: "/catalog/sale" },
-          { label: "ПОСЛУГИ", href: "/catalog/services" },
-        ],
+  { label: "МАГАЗИН", href: "/catalog", submenu: { columns: [
+      [
+        { label: "ВІНІЛОВІ ПЛАТІВКИ", href: "/catalog/vinyl" },
+        { label: "CD-ДИСКИ", href: "/catalog/cd" },
+        { label: "ГОТОВІ КОМПЛЕКТИ", href: "/catalog/kits" },
       ],
-    },
-  },
+      [
+        { label: "ВИКОНАВЕЦЬ", href: "/catalog/artist" },
+        { label: "ЖАНРИ", href: "/catalog/genres" },
+        { label: "НОВІ НАДХОДЖЕННЯ", href: "/catalog/new" },
+        { label: "ПОПУЛЯРНІ ТОВАРИ", href: "/catalog/popular" },
+        { label: "АКЦІЙНІ ПРОПОЗИЦІЇ", href: "/catalog/sale" },
+        { label: "ПОСЛУГИ", href: "/catalog/services" },
+      ],
+    ] } },
   { label: "ВІНІЛ", href: "/vinyl" },
   { label: "CD", href: "/cd" },
   { label: "ЖАНРИ", href: "/genres" },
@@ -48,11 +42,13 @@ export default function Header() {
     }
     const handler = setTimeout(async () => {
       try {
-        // Ensure host includes protocol
-        const hostEnv = process.env.NEXT_PUBLIC_MEILI_HOST!;
+        // Use environment variables
+        const hostEnv = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!;
         const host = hostEnv.startsWith('http') ? hostEnv : `https://${hostEnv}`;
-        const client = new MeiliSearch({ host, apiKey: process.env.NEXT_PUBLIC_MEILI_KEY! });
-        const index = client.index("products");
+        const apiKey = process.env.MEILISEARCH_API_KEY!;
+        const indexName = process.env.NEXT_PUBLIC_INDEX_NAME!;
+        const client = new MeiliSearch({ host, apiKey });
+        const index = client.index(indexName);
         const res = await index.search(query, { limit: 5 });
         setResults(res.hits as any[]);
       } catch (e) {
@@ -84,7 +80,7 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center space-x-6">
-          {navItems.map((item) => (
+          {navItems.map(item => (
             <div
               key={item.label}
               className="relative"
@@ -95,7 +91,11 @@ export default function Header() {
                 <a className="flex items-center hover:text-yellow-400 transition">
                   <span>{item.label}</span>
                   {item.submenu && (
-                    <img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4" />
+                    <img
+                      src="/icons/chevron-down.svg"
+                      alt=""
+                      className="ml-1 h-4 w-4"
+                    />
                   )}
                 </a>
               </Link>
@@ -103,7 +103,7 @@ export default function Header() {
                 <div className="absolute top-full left-0 mt-2 bg-gray-800 shadow-lg rounded-lg p-4 grid grid-cols-2 gap-4">
                   {item.submenu.columns.map((col, idx) => (
                     <ul key={idx} className="space-y-2">
-                      {col.map((sub) => (
+                      {col.map(sub => (
                         <li key={sub.label}>
                           <Link href={sub.href}>
                             <a className="block hover:text-yellow-400 transition">
@@ -126,18 +126,15 @@ export default function Header() {
               type="text"
               placeholder="Пошук"
               value={query}
-              onChange={(e) => { setQuery(e.target.value); setShowResults(true); }}
+              onChange={e => { setQuery(e.target.value); setShowResults(true); }}
               onFocus={() => setShowResults(true)}
               className="bg-gray-800 placeholder-gray-500 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-yellow-400 w-64"
             />
             {showResults && results.length > 0 && (
               <div className="absolute left-0 right-0 mt-1 bg-white text-black rounded-md shadow-lg max-h-60 overflow-auto z-20">
-                {results.map((hit) => (
+                {results.map(hit => (
                   <Link href={`/product/${hit.id}`} key={hit.id}>
-                    <a
-                      onClick={() => setShowResults(false)}
-                      className="block px-4 py-2 hover:bg-gray-100 transition"
-                    >
+                    <a onClick={() => setShowResults(false)} className="block px-4 py-2 hover:bg-gray-100 transition">
                       {hit.title}
                     </a>
                   </Link>
@@ -173,19 +170,17 @@ export default function Header() {
         {/* Mobile Menu */}
         {mobileOpen && (
           <div className="lg:hidden absolute top-full left-0 w-full bg-gray-900 text-white shadow-md p-4 space-y-4">
-            {navItems.map((item) => (
+            {navItems.map(item => (
               <div key={item.label}>
                 <Link href={item.href}>
                   <a className="flex justify-between items-center py-2 hover:text-yellow-400 transition">
                     {item.label}
-                    {item.submenu && (
-                      <img src="/icons/chevron-down.svg" alt="" className="h-4 w-4" />
-                    )}
+                    {item.submenu && <img src="/icons/chevron-down.svg" alt="" className="h-4 w-4" />} 
                   </a>
                 </Link>
                 {item.submenu && (
                   <div className="pl-4">
-                    {item.submenu.columns.flat().map((sub) => (
+                    {item.submenu.columns.flat().map(sub => (
                       <Link key={sub.label} href={sub.href}>
                         <a className="block py-1 hover:text-yellow-400 transition">{sub.label}</a>
                       </Link>
