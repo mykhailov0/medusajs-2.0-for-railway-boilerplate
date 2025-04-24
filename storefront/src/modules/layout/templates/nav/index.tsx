@@ -83,7 +83,6 @@ export default function Header() {
     if (openMenu === "МАГАЗИН" && wrapperRef.current && shopRef.current) {
       const wrapperRect = wrapperRef.current.getBoundingClientRect();
       const shopRect = shopRef.current.getBoundingClientRect();
-      // subtract extra 32px to shift first column left
       setSubmenuLeft(shopRect.left - wrapperRect.left - 32);
     }
   }, [openMenu]);
@@ -115,9 +114,12 @@ export default function Header() {
               >
                 <Link href={item.href}> 
                   <a
-                    className={`flex items-center px-2 py-1 rounded transition ${
-                      openMenu === item.label ? 'bg-[#DD6719]' : 'hover:bg-[#DD6719]'
-                    }`}>
+                    className={`flex items-center px-2 py-1 transition ${
+                      openMenu === item.label
+                        ? 'text-[#DD6719]'
+                        : 'hover:text-[#DD6719]'
+                    }`}
+                  >
                     {item.label}
                     {item.submenu && (
                       <img
@@ -168,12 +170,12 @@ export default function Header() {
             )}
           </div>
           <Link href="/auth/login">
-            <a className="px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
+            <a className="px-2 py-1 rounded transition hover:text-[#DD6719]">
               Увійти
             </a>
           </Link>
           <Link href="/cart">
-            <a className="flex items-center px-2 py-1 rounded transition hover:bg-[#DD6719] hover:text-white">
+            <a className="flex items-center px-2 py-1 rounded transition hover:text-[#DD6719]">
               <img src="/icons/cart.svg" alt="" className="h-5 w-5" />
             </a>
           </Link>
@@ -185,7 +187,7 @@ export default function Header() {
         <div className="absolute top-full left-0 right-0 bg-[#34373F]">
           <div className="mx-auto max-w-[1440px] px-6 py-6">
             <div
-              className="grid grid-cols-2 gap-2"
+              className="grid grid-cols-2 gap-1"
               style={{ marginLeft: submenuLeft }}
             >
               {currentSubmenu.columns.map((col, idx) => (
