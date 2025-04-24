@@ -3,45 +3,100 @@ import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-gray-200 px-8 py-12">
+    <footer className="bg-[#C9C9CE] px-8 py-12 text-[#34373F]">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Logo and Contact */}
         <div>
           <Link href="/">
-            <a className="flex items-center space-x-2">
+            <a>
               <Image src="/logo.svg" alt="ODESADISC Logo" width={40} height={40} />
-              <span className="text-xl font-bold">ODESADISC</span>
             </a>
           </Link>
-          <p className="mt-4">050 333-77-44</p>
-          <p className="text-sm">Оформити замовлення 9:00 - 21:00</p>
+          <p className="mt-4 text-xl font-light text-black">(050) 333-77-44</p>
+          <p className="text-xs font-normal leading-3">Оформити замовлення 9:00 - 21:00</p>
         </div>
 
         {/* Genres */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">Жанри</h3>
+          <h3 className="text-base font-semibold mb-4 text-black">Жанри</h3>
           <ul className="space-y-2">
-            <li><Link href="/genres/classic-rock"><a>Classic Rock</a></Link></li>
-            <li><Link href="/genres/jazz-blues"><a>Jazz &amp; Blues</a></Link></li>
-            <li><Link href="/genres/pop-music"><a>Pop Music</a></Link></li>
-            <li><Link href="/genres/electronic"><a>Electronic</a></Link></li>
-            <li><Link href="/genres/hiphop-rap"><a>Hip-Hop &amp; Rap</a></Link></li>
-            <li><Link href="/genres/movie-soundtracks"><a>Movie Soundtracks</a></Link></li>
-            <li><Link href="/genres"><a>Більше</a></Link></li>
+            <li>
+              <Link href="/genres/classic-rock">
+                <a className="text-sm font-normal leading-relaxed">Classic Rock</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/genres/jazz-blues">
+                <a className="text-sm font-normal leading-relaxed">Jazz &amp; Blues</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/genres/pop-music">
+                <a className="text-sm font-normal leading-relaxed">Pop Music</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/genres/electronic">
+                <a className="text-sm font-normal leading-relaxed">Electronic</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/genres/hiphop-rap">
+                <a className="text-sm font-normal leading-relaxed">Hip-Hop &amp; Rap</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/genres/movie-soundtracks">
+                <a className="text-sm font-normal leading-relaxed">Movie Soundtracks</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/genres">
+                <a className="text-sm font-normal leading-relaxed">Більше</a>
+              </Link>
+            </li>
           </ul>
         </div>
 
         {/* For Clients */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">Клієнтам</h3>
+          <h3 className="text-base font-semibold mb-4 text-black">Клієнтам</h3>
           <ul className="space-y-2">
-            <li><Link href="/about"><a>Про нас</a></Link></li>
-            <li><Link href="/terms"><a>Публічні оферти</a></Link></li>
-            <li><Link href="/delivery"><a>Оплата і доставка</a></Link></li>
-            <li><Link href="/sales"><a>Акції</a></Link></li>
-            <li><Link href="/care"><a>Догляд</a></Link></li>
-            <li><Link href="/account"><a>Особистий кабінет</a></Link></li>
-            <li><Link href="/faq"><a>FAQ</a></Link></li>
+            <li>
+              <Link href="/about">
+                <a className="text-sm font-normal leading-relaxed">Про нас</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms">
+                <a className="text-sm font-normal leading-relaxed">Публічні оферти</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/delivery">
+                <a className="text-sm font-normal leading-relaxed">Оплата і доставка</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/sales">
+                <a className="text-sm font-normal leading-relaxed">Акції</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/care">
+                <a className="text-sm font-normal leading-relaxed">Догляд</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/account">
+                <a className="text-sm font-normal leading-relaxed">Особистий кабінет</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/faq">
+                <a className="text-sm font-normal leading-relaxed">FAQ</a>
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -61,8 +116,8 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mt-8 border-t border-gray-700 pt-4 flex items-center justify-between text-sm">
-        <span>© Інтернет-магазин ODESADISC (Vinyl - CD) {new Date().getFullYear()}</span>
+      <div className="mt-8 border-t border-[#34373F] pt-4 flex items-center justify-between text-xs">
+        <span className="text-[#34373F]">© Інтернет-магазин ODESADISC (Vinyl - CD) {new Date().getFullYear()}</span>
         <div className="flex space-x-4 items-center">
           <Image src="/icons/apay.svg" alt="Apple Pay" width={32} height={20} />
           <Image src="/icons/gpay.svg" alt="Google Pay" width={32} height={20} />
