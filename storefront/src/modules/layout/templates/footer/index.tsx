@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import InstaIcon from '/icons/insta.svg';
+import FbIcon from '/icons/fb.svg';
+import SpotifyIcon from '/icons/Spotify.svg';
 
 export default function Footer() {
   return (
@@ -20,41 +23,23 @@ export default function Footer() {
         <div>
           <h3 className="text-base font-semibold mb-4 text-black">Жанри</h3>
           <ul className="space-y-2">
-            <li>
-              <Link href="/genres/classic-rock">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Classic Rock</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/genres/jazz-blues">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Jazz &amp; Blues</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/genres/pop-music">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Pop Music</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/genres/electronic">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Electronic</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/genres/hiphop-rap">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Hip-Hop &amp; Rap</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/genres/movie-soundtracks">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Movie Soundtracks</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/genres">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Більше</a>
-              </Link>
-            </li>
+            {[
+              ['Classic Rock', '/genres/classic-rock'],
+              ['Jazz & Blues', '/genres/jazz-blues'],
+              ['Pop Music', '/genres/pop-music'],
+              ['Electronic', '/genres/electronic'],
+              ['Hip-Hop & Rap', '/genres/hiphop-rap'],
+              ['Movie Soundtracks', '/genres/movie-soundtracks'],
+              ['Більше', '/genres'],
+            ].map(([label, href]) => (
+              <li key={label}>
+                <Link href={href}>
+                  <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">
+                    {label}
+                  </a>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -62,55 +47,37 @@ export default function Footer() {
         <div>
           <h3 className="text-base font-semibold mb-4 text-black">Клієнтам</h3>
           <ul className="space-y-2">
-            <li>
-              <Link href="/about">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Про нас</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/terms">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Публічні оферти</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/delivery">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Оплата і доставка</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/sales">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Акції</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/care">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Догляд</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/account">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Особистий кабінет</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/faq">
-                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">FAQ</a>
-              </Link>
-            </li>
+            {[
+              ['Про нас', '/about'],
+              ['Публічні оферти', '/terms'],
+              ['Оплата і доставка', '/delivery'],
+              ['Акції', '/sales'],
+              ['Догляд', '/care'],
+              ['Особистий кабінет', '/account'],
+              ['FAQ', '/faq'],
+            ].map(([label, href]) => (
+              <li key={label}>
+                <Link href={href}>
+                  <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">
+                    {label}
+                  </a>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
         {/* Social Icons */}
         <div className="flex items-start md:justify-center">
           <div className="flex space-x-4">
-            <a href="https://instagram.com" aria-label="Instagram" className="p-2 rounded hover:bg-[#DD6719]">
-              <Image src="/icons/insta.svg" alt="Instagram" width={24} height={24} />
+            <a href="https://instagram.com" aria-label="Instagram">
+              <InstaIcon className="w-6 h-6 fill-current text-[#34373F] hover:text-[#DD6719]" />
             </a>
-            <a href="https://fb.com" aria-label="Facebook" className="p-2 rounded hover:bg-[#DD6719]">
-              <Image src="/icons/fb.svg" alt="Facebook" width={24} height={24} />
+            <a href="https://facebook.com" aria-label="Facebook">
+              <FbIcon className="w-6 h-6 fill-current text-[#34373F] hover:text-[#DD6719]" />
             </a>
-            <a href="https://spotify.com" aria-label="Spotify" className="p-2 rounded hover:bg-[#DD6719]">
-              <Image src="/icons/Spotify.svg" alt="Spotify" width={24} height={24} />
+            <a href="https://spotify.com" aria-label="Spotify">
+              <SpotifyIcon className="w-6 h-6 fill-current text-[#34373F] hover:text-[#DD6719]" />
             </a>
           </div>
         </div>
