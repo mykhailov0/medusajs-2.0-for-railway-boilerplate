@@ -13,34 +13,43 @@ interface Banner {
 }
 
 const Hero: React.FC = () => {
-  // Публічний запит колекцій за handle "banners"
+  // Запит публічних колекцій з handle "banners"
   const {
     collections,
     isLoading: isLoadingCollections,
     isError: collectionsError,
   } = useCollections({ handle: ["banners"], limit: 1, offset: 0 })
 
-  const collectionId = collections?.[0]?.id ?? ""
+  const collectionId = collections?.[0]?.id
 
-  // Публічний запит продуктів за collection_id (має бути масив рядків)
+  // Запит публічних продуктів за collection_id (масив рядків)
   const {
     products,
     isLoading: isLoadingProducts,
     isError: productsError,
-  } = useProducts({ collection_id: [collectionId], limit: 50, offset: 0 })
+  } = useProducts(
+    collectionId
+      ? { collection_id: [collectionId], limit: 50, offset: 0 }
+      : undefined,
+    { enabled: Boolean(collectionId) }
+  )
 
+  // Лоадер під час будь-якого запиту
   if (isLoadingCollections || isLoadingProducts) {
     return <div>Завантаження банерів…</div>
   }
 
+  // Помилка запиту
   if (collectionsError || productsError) {
     return <div>Помилка завантаження банерів</div>
   }
 
+  // Якщо колекція порожня або немає товарів
   if (!collectionId || !products?.length) {
     return <div>Банери не знайдені</div>
   }
 
+  // Мапінг продуктів у типізовані банери
   const banners: Banner[] = products.map((p: any) => ({
     id: p.id,
     title: p.title,
