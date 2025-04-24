@@ -1,18 +1,36 @@
-// src/app/page.tsx
+import { Metadata } from "next"
 
-import React from 'react'
-import Hero from '@modules/home/components/hero'
+import FeaturedProducts from "@modules/home/components/featured-products"
+import Hero from "@modules/home/components/hero"
+import { getCollectionsWithProducts } from "@lib/data/collections"
+import { getRegion } from "@lib/data/regions"
 
-export const metadata = {
-  title: 'Головна сторінка',
-  description: 'Магазин вінілових платівок - Головна',
+export const metadata: Metadata = {
+  title: "ODESADISC",
+  description:
+    "Інтернет-магазин вінілових платівок, CD-дисків та готових комплектів в Україні",
 }
 
-export default function Page() {
+export default async function Home({
+  params: { countryCode },
+}: {
+  params: { countryCode: string }
+}) {
+  const collections = await getCollectionsWithProducts(countryCode)
+  const region = await getRegion(countryCode)
+
+  if (!collections || !region) {
+    return null
+  }
+
   return (
     <>
       <Hero />
-      {/* Тут можна додати інші секції: NewArrivals, FeaturedCollections, Footer тощо */}
+      <div className="py-12">
+        <ul className="flex flex-col gap-x-6">
+          <FeaturedProducts collections={collections} region={region} />
+        </ul>
+      </div>
     </>
   )
 }
