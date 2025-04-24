@@ -1,155 +1,75 @@
-import { getCategoriesList } from "@lib/data/categories"
-import { getCollectionsList } from "@lib/data/collections"
-import { Text, clx } from "@medusajs/ui"
+import Link from 'next/link';
+import Image from 'next/image';
 
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import MedusaCTA from "@modules/layout/components/medusa-cta"
-
-export default async function Footer() {
-  const { collections } = await getCollectionsList(0, 6)
-  const { product_categories } = await getCategoriesList(0, 6)
-
+export default function Footer() {
   return (
-    <footer className="border-t border-ui-border-base w-full">
-      <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
-            >
-              Medusa Store
-            </LocalizedClientLink>
-          </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {product_categories && product_categories?.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {product_categories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return
-                    }
+    <footer className="bg-gray-800 text-gray-200 px-8 py-12">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Logo and Contact */}
+        <div>
+          <Link href="/">
+            <a className="flex items-center space-x-2">
+              <Image src="/logo.svg" alt="ODESADISC Logo" width={40} height={40} />
+              <span className="text-xl font-bold">ODESADISC</span>
+            </a>
+          </Link>
+          <p className="mt-4">050 333-77-44</p>
+          <p className="text-sm">Оформити замовлення 9:00 - 21:00</p>
+        </div>
 
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null
+        {/* Genres */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Жанри</h3>
+          <ul className="space-y-2">
+            <li><Link href="/genres/classic-rock"><a>Classic Rock</a></Link></li>
+            <li><Link href="/genres/jazz-blues"><a>Jazz &amp; Blues</a></Link></li>
+            <li><Link href="/genres/pop-music"><a>Pop Music</a></Link></li>
+            <li><Link href="/genres/electronic"><a>Electronic</a></Link></li>
+            <li><Link href="/genres/hiphop-rap"><a>Hip-Hop &amp; Rap</a></Link></li>
+            <li><Link href="/genres/movie-soundtracks"><a>Movie Soundtracks</a></Link></li>
+            <li><Link href="/genres"><a>Більше</a></Link></li>
+          </ul>
+        </div>
 
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
-                      >
-                        <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            )}
-            {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
-                </span>
-                <ul
-                  className={clx(
-                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                    {
-                      "grid-cols-2": (collections?.length || 0) > 3,
-                    }
-                  )}
-                >
-                  {collections?.slice(0, 6).map((c) => (
-                    <li key={c.id}>
-                      <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
-                        href={`/collections/${c.handle}`}
-                      >
-                        {c.title}
-                      </LocalizedClientLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Medusa</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
-                <li>
-                  <a
-                    href="https://github.com/medusajs"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://docs.medusajs.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/medusajs/nextjs-starter-medusa"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Source code
-                  </a>
-                </li>
-              </ul>
-            </div>
+        {/* For Clients */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Клієнтам</h3>
+          <ul className="space-y-2">
+            <li><Link href="/about"><a>Про нас</a></Link></li>
+            <li><Link href="/terms"><a>Публічні оферти</a></Link></li>
+            <li><Link href="/delivery"><a>Оплата і доставка</a></Link></li>
+            <li><Link href="/sales"><a>Акції</a></Link></li>
+            <li><Link href="/care"><a>Догляд</a></Link></li>
+            <li><Link href="/account"><a>Особистий кабінет</a></Link></li>
+            <li><Link href="/faq"><a>FAQ</a></Link></li>
+          </ul>
+        </div>
+
+        {/* Social Icons */}
+        <div className="flex items-start md:justify-center">
+          <div className="flex space-x-4">
+            <a href="https://youtube.com" aria-label="YouTube">
+              <Image src="/icons/youtube.svg" alt="YouTube" width={24} height={24} />
+            </a>
+            <a href="https://instagram.com" aria-label="Instagram">
+              <Image src="/icons/instagram.svg" alt="Instagram" width={24} height={24} />
+            </a>
+            <a href="https://spotify.com" aria-label="Spotify">
+              <Image src="/icons/spotify.svg" alt="Spotify" width={24} height={24} />
+            </a>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Medusa Store. All rights reserved.
-          </Text>
-          <MedusaCTA />
+      </div>
+
+      <div className="mt-8 border-t border-gray-700 pt-4 flex items-center justify-between text-sm">
+        <span>© Інтернет-магазин ODESADISC (Vinyl - CD) {new Date().getFullYear()}</span>
+        <div className="flex space-x-4 items-center">
+          <Image src="/icons/apple-pay.svg" alt="Apple Pay" width={32} height={20} />
+          <Image src="/icons/google-pay.svg" alt="Google Pay" width={32} height={20} />
+          <Image src="/icons/visa.svg" alt="Visa" width={32} height={20} />
+          <Image src="/icons/mastercard.svg" alt="Mastercard" width={32} height={20} />
         </div>
       </div>
     </footer>
-  )
+  );
 }
