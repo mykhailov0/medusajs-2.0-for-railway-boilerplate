@@ -44,13 +44,10 @@ export default function Header() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [submenuLeft, setSubmenuLeft] = useState<number>(0);
 
-  // Fetch search results
+  // Fetch search results from MeiliSearch
   useEffect(() => {
-    if (!query) {
-      setResults([]);
-      return;
-    }
-    const handler = setTimeout(async () => {
+    if (!query) return setResults([]);
+    const timer = setTimeout(async () => {
       try {
         const hostEnv = process.env.NEXT_PUBLIC_SEARCH_ENDPOINT!;
         const host = hostEnv.startsWith('http') ? hostEnv : `https://${hostEnv}`;
@@ -60,27 +57,28 @@ export default function Header() {
         const index = client.index(indexName);
         const res = await index.search(query, { limit: 5 });
         setResults(res.hits as any[]);
-      } catch (e) {
-        console.error("Search error:", e);
+      } catch (err) {
+        console.error(err);
+        setResults([]);
       }
     }, 300);
-    return () => clearTimeout(handler);
+    return () => clearTimeout(timer);
   }, [query]);
 
-  // Close search dropdown on outside click
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setShowResults(false);
       }
     };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  // Compute offset for dropdown under "МАГАЗИН"
+  // Compute submenu position
   useEffect(() => {
-    if (openMenu === "МАГАЗИН" && wrapperRef.current && shopRef.current) {
+    if (openMenu === 'МАГАЗИН' && wrapperRef.current && shopRef.current) {
       const wrapperRect = wrapperRef.current.getBoundingClientRect();
       const shopRect = shopRef.current.getBoundingClientRect();
       setSubmenuLeft(shopRect.left - wrapperRect.left - 32);
@@ -90,116 +88,63 @@ export default function Header() {
   const currentSubmenu = navItems.find(i => i.label === openMenu)?.submenu;
 
   return (
-    <header
-      className="fixed top-0 w-full bg-[#34373F] text-white z-50"
-      onMouseLeave={() => setOpenMenu(null)}
-    >
-      <div
-        ref={wrapperRef}
-        className="mx-auto max-w-[1440px] px-6 py-3 flex items-center justify-between relative"
-      >
-        {/* Logo + Nav */}
+    <header className="fixed top-0 w-full bg-[#34373F] text-white z-50 h-[100px]" onMouseLeave={() => setOpenMenu(null)}>
+      <div ref={wrapperRef} className="mx-auto max-w-[1440px] px-6 h-full flex items-center justify-between relative">
+        {/* Logo & Navigation */}
         <div className="flex items-center space-x-6">
-          <Link href="/">
-            <a className="flex items-center">
-              <img src="/logo.svg" alt="OdesaDisc" className="h-8 w-auto" />
-            </a>
-          </Link>
+          <Link href="/"><a className="flex items-center"><img src="/logo.svg" alt="OdesaDisc" className="h-8" /></a></Link>
           <nav className="hidden lg:flex items-center space-x-4">
             {navItems.map(item => (
-              <div
-                key={item.label}
-                ref={item.label === "МАГАЗИН" ? shopRef : null}
-                onMouseEnter={() => item.submenu && setOpenMenu(item.label)}
-              >
-                <Link href={item.href}> 
-                  <a
-                    className={`flex items-center px-2 py-1 transition ${
-                      openMenu === item.label
-                        ? 'text-[#DD6719]'
-                        : 'hover:text-[#DD6719]'
-                    }`}
-                  >
-                    {item.label}
-                    {item.submenu && (
-                      <img
-                        src="/icons/chevron-down.svg"
-                        alt=""
-                        className="ml-1 h-4 w-4"
-                      />
-                    )}
-                  </a>
-                </Link>
+              <div key={item.label} ref={item.label==='МАГАЗИН'?shopRef:null} onMouseEnter={() => item.submenu && setOpenMenu(item.label)}>
+                <Link href={item.href}><a className={`flex items-center px-2 py-1 transition font-normal text-[14px] leading-[100%] uppercase ${openMenu===item.label?'text-[#DD6719]':'hover:text-[#DD6719]'}`}> {item.label}{item.submenu&&<img src="/icons/chevron-down.svg" alt="" className="ml-1 h-4 w-4"/>}</a></Link>
               </div>
             ))}
           </nav>
         </div>
 
-        {/* Search + Actions */}
+        {/* Search & Actions */}
         <div className="flex items-center space-x-4">
           <div className="relative" ref={containerRef}>
-            <img
-              src="/icons/search.svg"
-              alt="search"
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5"
-            />
+            <img src="/icons/search.svg" alt="search" className="absolute left-[10px] top-1/2 transform -translate-y-1/2 h-5 w-5" />
             <input
               type="text"
               placeholder="Пошук"
               value={query}
-              onChange={e => {
-                setQuery(e.target.value);
-                setShowResults(true);
-              }}
+              onChange={e => { setQuery(e.target.value); setShowResults(true); }}
               onFocus={() => setShowResults(true)}
-              className="bg-[#34373F] placeholder-gray-500 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#DD6719] transition-all w-32 focus:w-64"
+              className="bg-[#34373F] rounded-full w-[302px] h-[40px] border border-[#585A5F] placeholder-gray-500 pl-[36px] pr-3 py-[10px] focus:bg-[#34373F] focus:outline-none focus:ring-2 focus:ring-[#DD6719] transition"
             />
-            {showResults && results.length > 0 && (
-              <div className="absolute left-0 right-0 bg-white text-black rounded-md shadow-lg max-h-60 overflow-auto z-20">
-                {results.map(hit => (
+            {showResults && results.length>0 && (
+              <div className="absolute top-full left-0 right-0 bg-white text-black rounded-md shadow-lg overflow-auto z-20 mt-1">
+                {results.map(hit=> (
                   <Link href={`/products/${hit.handle}`} key={hit.id}>
-                    <a
-                      onClick={() => setShowResults(false)}
-                      className="block px-4 py-2 hover:bg-gray-100 transition"
-                    >
-                      {hit.title}
+                    <a className="flex items-center px-4 py-2 hover:bg-gray-100 transition">
+                      <img src={hit.thumbnail} alt={hit.title} className="w-10 h-10 object-cover rounded mr-3" />
+                      <div>
+                        <p className="font-semibold text-gray-900">{hit.title}</p>
+                        <p className="text-sm text-gray-600">{hit.artist}</p>
+                      </div>
                     </a>
                   </Link>
                 ))}
               </div>
             )}
           </div>
-          <Link href="/auth/login">
-            <a className="px-2 py-1 rounded transition hover:text-[#DD6719]">
-              Увійти
-            </a>
-          </Link>
-          <Link href="/cart">
-            <a className="flex items-center px-2 py-1 rounded transition hover:text-[#DD6719]">
-              <img src="/icons/cart.svg" alt="" className="h-5 w-5" />
-            </a>
-          </Link>
+
+          <Link href="/auth/login"><a className="px-2 py-1 rounded transition font-normal text-[14px] leading-[100%] uppercase hover:text-[#DD6719]">Увійти</a></Link>
+          <Link href="/cart"><a className="flex items-center px-2 py-1 rounded transition font-normal text-[14px] leading-[100%] uppercase hover:text-[#DD6719]"><img src="/icons/cart.svg" alt="" className="h-5 w-5 mr-1"/>Кошик</a></Link>
         </div>
       </div>
 
-      {/* Dropdown */}
+      {/* Dropdown Menu */}
       {currentSubmenu && (
         <div className="absolute top-full left-0 right-0 bg-[#34373F]">
           <div className="mx-auto max-w-[1440px] px-6 py-6">
-            <div
-              className="grid grid-cols-2 gap-1"
-              style={{ marginLeft: submenuLeft }}
-            >
-              {currentSubmenu.columns.map((col, idx) => (
+            <div className="grid grid-cols-2 gap-1" style={{marginLeft: submenuLeft}}>
+              {currentSubmenu.columns.map((col, idx)=>(
                 <ul key={idx} className="space-y-3">
-                  {col.map(sub => (
-                    <li key={sub.label}>
-                      <Link href={sub.href}>
-                        <a className="block px-2 py-1 transition hover:text-[#DD6719]">
-                          {sub.label}
-                        </a>
-                      </Link>
-                    </li>
+                  {col.map(sub=>(
+                    <li key={sub.label}><Link href={sub.href}><a className="block px-2 py-1 font-normal text-[14px] leading-[100%] uppercase transition hover:text-[#DD6719]">{sub.label}</a></Link></li>
                   ))}
                 </ul>
               ))}
