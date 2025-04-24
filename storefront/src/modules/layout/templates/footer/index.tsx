@@ -5,7 +5,7 @@ import Image from 'next/image';
 export default function Footer() {
   return (
     <footer className="bg-[#C9C9CE] px-8 pt-12 pb-0 text-[#34373F]">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Logo and Contact */}
         <div>
           <Link href="/">
@@ -32,7 +32,7 @@ export default function Footer() {
             ].map(([label, href]) => (
               <li key={label}>
                 <Link href={href}>
-                  <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">
+                  <a className="text-sm font-normal leading-relaxed hover:text-[#DD6719]">
                     {label}
                   </a>
                 </Link>
@@ -56,7 +56,7 @@ export default function Footer() {
             ].map(([label, href]) => (
               <li key={label}>
                 <Link href={href}>
-                  <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">
+                  <a className="text-sm font-normal leading-relaxed hover:text-[#DD6719]">
                     {label}
                   </a>
                 </Link>
@@ -69,13 +69,13 @@ export default function Footer() {
         <div className="flex items-start md:justify-center">
           <div className="flex space-x-4">
             <a href="https://instagram.com" aria-label="Instagram">
-              <Image src="/icons/insta.svg" alt="Instagram" width={24} height={24} className="hover:bg-[#DD6719] p-1 rounded" />
+              <Image src="/icons/insta.svg" alt="Instagram" width={24} height={24} className="hover:text-[#DD6719]" />
             </a>
             <a href="https://facebook.com" aria-label="Facebook">
-              <Image src="/icons/fb.svg" alt="Facebook" width={24} height={24} className="hover:bg-[#DD6719] p-1 rounded" />
+              <Image src="/icons/fb.svg" alt="Facebook" width={24} height={24} className="hover:text-[#DD6719]" />
             </a>
             <a href="https://spotify.com" aria-label="Spotify">
-              <Image src="/icons/Spotify.svg" alt="Spotify" width={24} height={24} className="hover:bg-[#DD6719] p-1 rounded" />
+              <Image src="/icons/Spotify.svg" alt="Spotify" width={24} height={24} className="hover:text-[#DD6719]" />
             </a>
           </div>
         </div>
