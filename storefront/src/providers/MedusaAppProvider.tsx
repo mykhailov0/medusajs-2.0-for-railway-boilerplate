@@ -1,12 +1,12 @@
 // src/providers/MedusaAppProvider.tsx
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { MedusaProvider } from "medusa-react"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import React, { useState } from "react";
+import { MedusaProvider } from "medusa-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export function MedusaAppProvider({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <MedusaProvider
@@ -17,5 +17,5 @@ export function MedusaAppProvider({ children }: { children: React.ReactNode }) {
         {children}
       </QueryClientProvider>
     </MedusaProvider>
-  )
+  );
 }
