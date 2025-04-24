@@ -1,23 +1,23 @@
 // src/app/layout.tsx
-import { getBaseURL } from "@lib/util/env";
-import { Metadata } from "next";
-import "styles/globals.css";
-
-// Використовуємо клієнтський провайдер з хуками
-import { MedusaAppProvider } from "../providers/MedusaAppProvider";
+import { Metadata } from "next"
+import "styles/globals.css"
+import { MedusaAppProvider } from "../providers/MedusaAppProvider"
 
 export const metadata: Metadata = {
-  metadataBase: new URL(getBaseURL()),
-};
+  title: "...",
+  description: "...",
+  // Якщо вам потрібен BASE_URL для якихось лінків:
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL!),
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-mode="light">
+    <html lang="uk">
       <body>
         <MedusaAppProvider>
-          <main className="relative">{children}</main>
+          <main>{children}</main>
         </MedusaAppProvider>
       </body>
     </html>
-  );
+  )
 }
