@@ -81,7 +81,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mt-8 h-12 flex items-center justify-between text-xs">
+      <div className="max-w-[1400px] mx-auto mt-8 h-12 flex items-center justify-between text-xs">
         <span className="text-[#34373F]">© Інтернет-магазин ODESADISC (Vinyl - CD) {new Date().getFullYear()}</span>
         <div className="flex space-x-4 items-center">
           <Image src="/icons/apay.svg" alt="Apple Pay" width={32} height={20} />
