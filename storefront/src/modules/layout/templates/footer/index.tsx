@@ -48,14 +48,14 @@ export default function Footer() {
         {/* Social Icons */}
         <div className="flex items-start md:justify-center">
           <div className="flex space-x-4">
-            <a href="https://youtube.com" aria-label="YouTube">
-              <Image src="/icons/youtube.svg" alt="YouTube" width={24} height={24} />
-            </a>
             <a href="https://instagram.com" aria-label="Instagram">
-              <Image src="/icons/instagram.svg" alt="Instagram" width={24} height={24} />
+              <Image src="/icons/insta.svg" alt="Instagram" width={24} height={24} />
+            </a>
+            <a href="https://fb.com" aria-label="Facebook">
+              <Image src="/icons/fb.svg" alt="Facebook" width={24} height={24} />
             </a>
             <a href="https://spotify.com" aria-label="Spotify">
-              <Image src="/icons/spotify.svg" alt="Spotify" width={24} height={24} />
+              <Image src="/icons/Spotify.svg" alt="Spotify" width={24} height={24} />
             </a>
           </div>
         </div>
@@ -64,10 +64,10 @@ export default function Footer() {
       <div className="mt-8 border-t border-gray-700 pt-4 flex items-center justify-between text-sm">
         <span>© Інтернет-магазин ODESADISC (Vinyl - CD) {new Date().getFullYear()}</span>
         <div className="flex space-x-4 items-center">
-          <Image src="/icons/apple-pay.svg" alt="Apple Pay" width={32} height={20} />
-          <Image src="/icons/google-pay.svg" alt="Google Pay" width={32} height={20} />
+          <Image src="/icons/apay.svg" alt="Apple Pay" width={32} height={20} />
+          <Image src="/icons/gpay.svg" alt="Google Pay" width={32} height={20} />
           <Image src="/icons/visa.svg" alt="Visa" width={32} height={20} />
-          <Image src="/icons/mastercard.svg" alt="Mastercard" width={32} height={20} />
+          <Image src="/icons/mc.svg" alt="Mastercard" width={32} height={20} />
         </div>
       </div>
     </footer>
