@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import InstaIcon from '/icons/insta.svg';
-import FbIcon from '/icons/fb.svg';
-import SpotifyIcon from '/icons/Spotify.svg';
+// social icons via next/image from public/icons
 
 export default function Footer() {
   return (
@@ -71,13 +69,13 @@ export default function Footer() {
         <div className="flex items-start md:justify-center">
           <div className="flex space-x-4">
             <a href="https://instagram.com" aria-label="Instagram">
-              <InstaIcon className="w-6 h-6 fill-current text-[#34373F] hover:text-[#DD6719]" />
+              <Image src="/icons/insta.svg" alt="Instagram" width={24} height={24} className="hover:bg-[#DD6719] p-1 rounded" />
             </a>
             <a href="https://facebook.com" aria-label="Facebook">
-              <FbIcon className="w-6 h-6 fill-current text-[#34373F] hover:text-[#DD6719]" />
+              <Image src="/icons/fb.svg" alt="Facebook" width={24} height={24} className="hover:bg-[#DD6719] p-1 rounded" />
             </a>
             <a href="https://spotify.com" aria-label="Spotify">
-              <SpotifyIcon className="w-6 h-6 fill-current text-[#34373F] hover:text-[#DD6719]" />
+              <Image src="/icons/Spotify.svg" alt="Spotify" width={24} height={24} className="hover:bg-[#DD6719] p-1 rounded" />
             </a>
           </div>
         </div>
