@@ -9,7 +9,7 @@ export default function Footer() {
         <div>
           <Link href="/">
             <a>
-              <Image src="/logo.svg" alt="ODESADISC Logo" width={40} height={40} />
+              <Image src="/logo-black.svg" alt="ODESADISC Logo" width={68} height={68} />
             </a>
           </Link>
           <p className="mt-4 text-xl font-light text-black">(050) 333-77-44</p>
@@ -22,37 +22,37 @@ export default function Footer() {
           <ul className="space-y-2">
             <li>
               <Link href="/genres/classic-rock">
-                <a className="text-sm font-normal leading-relaxed">Classic Rock</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Classic Rock</a>
               </Link>
             </li>
             <li>
               <Link href="/genres/jazz-blues">
-                <a className="text-sm font-normal leading-relaxed">Jazz &amp; Blues</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Jazz &amp; Blues</a>
               </Link>
             </li>
             <li>
               <Link href="/genres/pop-music">
-                <a className="text-sm font-normal leading-relaxed">Pop Music</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Pop Music</a>
               </Link>
             </li>
             <li>
               <Link href="/genres/electronic">
-                <a className="text-sm font-normal leading-relaxed">Electronic</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Electronic</a>
               </Link>
             </li>
             <li>
               <Link href="/genres/hiphop-rap">
-                <a className="text-sm font-normal leading-relaxed">Hip-Hop &amp; Rap</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Hip-Hop &amp; Rap</a>
               </Link>
             </li>
             <li>
               <Link href="/genres/movie-soundtracks">
-                <a className="text-sm font-normal leading-relaxed">Movie Soundtracks</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Movie Soundtracks</a>
               </Link>
             </li>
             <li>
               <Link href="/genres">
-                <a className="text-sm font-normal leading-relaxed">Більше</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Більше</a>
               </Link>
             </li>
           </ul>
@@ -64,37 +64,37 @@ export default function Footer() {
           <ul className="space-y-2">
             <li>
               <Link href="/about">
-                <a className="text-sm font-normal leading-relaxed">Про нас</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Про нас</a>
               </Link>
             </li>
             <li>
               <Link href="/terms">
-                <a className="text-sm font-normal leading-relaxed">Публічні оферти</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Публічні оферти</a>
               </Link>
             </li>
             <li>
               <Link href="/delivery">
-                <a className="text-sm font-normal leading-relaxed">Оплата і доставка</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Оплата і доставка</a>
               </Link>
             </li>
             <li>
               <Link href="/sales">
-                <a className="text-sm font-normal leading-relaxed">Акції</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Акції</a>
               </Link>
             </li>
             <li>
               <Link href="/care">
-                <a className="text-sm font-normal leading-relaxed">Догляд</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Догляд</a>
               </Link>
             </li>
             <li>
               <Link href="/account">
-                <a className="text-sm font-normal leading-relaxed">Особистий кабінет</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">Особистий кабінет</a>
               </Link>
             </li>
             <li>
               <Link href="/faq">
-                <a className="text-sm font-normal leading-relaxed">FAQ</a>
+                <a className="text-sm font-normal leading-relaxed hover:bg-[#DD6719]">FAQ</a>
               </Link>
             </li>
           </ul>
@@ -103,20 +103,20 @@ export default function Footer() {
         {/* Social Icons */}
         <div className="flex items-start md:justify-center">
           <div className="flex space-x-4">
-            <a href="https://instagram.com" aria-label="Instagram">
+            <a href="https://instagram.com" aria-label="Instagram" className="p-2 rounded hover:bg-[#DD6719]">
               <Image src="/icons/insta.svg" alt="Instagram" width={24} height={24} />
             </a>
-            <a href="https://fb.com" aria-label="Facebook">
+            <a href="https://fb.com" aria-label="Facebook" className="p-2 rounded hover:bg-[#DD6719]">
               <Image src="/icons/fb.svg" alt="Facebook" width={24} height={24} />
             </a>
-            <a href="https://spotify.com" aria-label="Spotify">
+            <a href="https://spotify.com" aria-label="Spotify" className="p-2 rounded hover:bg-[#DD6719]">
               <Image src="/icons/Spotify.svg" alt="Spotify" width={24} height={24} />
             </a>
           </div>
         </div>
       </div>
 
-      <div className="mt-8 border-t border-[#34373F] pt-4 flex items-center justify-between text-xs">
+      <div className="mt-8 h-12 flex items-center justify-between text-xs">
         <span className="text-[#34373F]">© Інтернет-магазин ODESADISC (Vinyl - CD) {new Date().getFullYear()}</span>
         <div className="flex space-x-4 items-center">
           <Image src="/icons/apay.svg" alt="Apple Pay" width={32} height={20} />
