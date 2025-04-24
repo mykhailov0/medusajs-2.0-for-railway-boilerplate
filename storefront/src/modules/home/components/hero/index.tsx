@@ -1,87 +1,35 @@
-import React from 'react';
-import Image from 'next/image';
-import { useAdminCollections, useAdminProducts } from 'medusa-react';
+import { Github } from "@medusajs/icons"
+import { Button, Heading } from "@medusajs/ui"
 
-// Hero component: відображає товари з колекції "banners"
-interface Banner {
-  id: string;
-  title: string;
-  thumbnail: string;
-  description: string;
+const Hero = () => {
+  return (
+    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
+      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
+        <span>
+          <Heading
+            level="h1"
+            className="text-3xl leading-10 text-ui-fg-base font-normal"
+          >
+            Well done! You have successfully deployed your Medusa 2.0 store on Railway!
+          </Heading>
+          <Heading
+            level="h2"
+            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
+          >
+            Need help customizing your store?
+          </Heading>
+        </span>
+        <a
+          href="https://funkyton.com/medusajs-2-0-is-finally-here/"
+          target="_blank"
+        >
+          <h1 style={{ textDecoration: "underline" }}>
+            Visit the tutorial
+          </h1>
+        </a>
+      </div>
+    </div>
+  )
 }
 
-const Hero: React.FC = () => {
-  // Запитуємо метадані колекції з handle "banners"
-  const { collections, isLoading: isCollectionsLoading } = useAdminCollections({
-    handle: "banners", // приймає string
-    limit: 1,            // обмежуємо одним елементом
-    offset: 0,           // необхідний параметр для AdminGetCollectionsParams
-  });
-
-  // Беремо ID колекції (якщо є)
-  const collectionId = collections?.[0]?.id ?? "";
-
-  // Запитуємо товари за collection_id
-  const {
-    products,
-    isLoading: isProductsLoading,
-  } = useAdminProducts({
-    collection_id: [collectionId], // приймає string[]
-  });
-
-  // Показуємо спінер, поки йде будь-який запит
-  if (isCollectionsLoading || isProductsLoading) {
-    return <div>Завантаження банерів...</div>;
-  }
-
-  // Якщо немає колекції або товарів
-  if (!collectionId || !products?.length) {
-    return <div>Банери не знайдені</div>;
-  }
-
-  // Мапимо товари в Banner[] для безпеки типів
-  const banners: Banner[] = products.map((p: any) => ({
-    id: p.id,
-    title: p.title,
-    thumbnail: p.thumbnail,
-    description: p.description,
-  }));
-
-  return (
-    <section className="container mx-auto py-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {banners.map((product) => (
-          <div
-            key={product.id}
-            className="rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow"
-          >
-            <div className="relative w-full h-48">
-              <Image
-                src={product.thumbnail}
-                alt={product.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="p-4">
-              <h2 className="text-xl font-semibold truncate">
-                {product.title}
-              </h2>
-              <p className="mt-2 text-gray-600 text-sm">
-                {product.description}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-export default Hero;
-
-// Оновлено:
-// • Додано обов'язковий параметр offset: 0 у useAdminCollections
-// • Передано collection_id як масив рядків у useAdminProducts
-// Тепер не буде помилок TS 2345 або 2322 щодо типів параметрів.
+export default Hero
