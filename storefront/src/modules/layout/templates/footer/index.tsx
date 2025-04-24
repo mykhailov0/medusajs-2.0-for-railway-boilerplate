@@ -3,13 +3,13 @@ import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#C9C9CE] px-8 py-12 text-[#34373F]">
+    <footer className="bg-[#C9C9CE] px-8 pt-12 pb-0 text-[#34373F]">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Logo and Contact */}
         <div>
           <Link href="/">
             <a>
-              <Image src="/logo-black.svg" alt="ODESADISC Logo" width={68} height={68} />
+              <Image src="/logo-black.svg" alt="ODESADISC Logo" width={168} height={68} />
             </a>
           </Link>
           <p className="mt-4 text-xl font-light text-black">(050) 333-77-44</p>
