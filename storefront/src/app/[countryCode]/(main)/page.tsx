@@ -1,36 +1,30 @@
-import { Metadata } from "next"
+// src/app/[countryCode]/(main)/page.tsx
 
-import FeaturedProducts from "@modules/home/components/featured-products"
+import React from "react"
+import { sdk } from "@lib/config"
 import Hero from "@modules/home/components/hero"
-import { getCollectionsWithProducts } from "@lib/data/collections"
-import { getRegion } from "@lib/data/regions"
+import FeaturedProducts from "@modules/home/components/featured-products"
+import { HttpTypes } from "@medusajs/types"
 
-export const metadata: Metadata = {
-  title: "ODESADISC",
-  description:
-    "Інтернет-магазин вінілових платівок, CD-дисків та готових комплектів в Україні",
-}
+export default async function Page({ params }: { params: { countryCode: string } }) {
+  // Отримуємо список регіонів для ціноутворення
+  const { regions } = await sdk.store.region.list()
+  const region = regions[0] as HttpTypes.StoreRegion
 
-export default async function Home({
-  params: { countryCode },
-}: {
-  params: { countryCode: string }
-}) {
-  const collections = await getCollectionsWithProducts(countryCode)
-  const region = await getRegion(countryCode)
-
-  if (!collections || !region) {
-    return null
-  }
+  // (Опційно) Запит колекцій для FeaturedProducts
+  const { collections } = await sdk.store.collection.list({ limit: 4, offset: 0 })
 
   return (
     <>
-      <Hero />
-      <div className="py-12">
-        <ul className="flex flex-col gap-x-6">
+      {/* Hero-блок із товаром з тегом "hero" */}
+      <Hero region={region} />
+
+      {/* Featured Products з перших 4-ох колекцій */}
+      <section className="content-container">
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <FeaturedProducts collections={collections} region={region} />
         </ul>
-      </div>
+      </section>
     </>
   )
 }
