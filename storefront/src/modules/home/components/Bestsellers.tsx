@@ -3,17 +3,23 @@
 import { FC, useRef, useEffect, useState } from "react";
 import Slider from "react-slick";
 import Link from "next/link";
-import ProductCard from "@modules/common/components/ProductCard";
+import ProductCard from "../../common/components/ProductCard";
 import { getBestsellers } from "../actions";
-import { Product } from "@lib/types";
+import { HttpTypes } from "@medusajs/types";
+import { Product } from "../../../lib/types";
 
-const Bestsellers: FC = () => {
+interface BestsellersProps {
+  region: HttpTypes.StoreRegion;
+}
+
+const Bestsellers: FC<BestsellersProps> = ({ region }) => {
   const sliderRef = useRef<Slider>(null);
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    getBestsellers().then(setProducts);
-  }, []);
+    // тепер можна передати region.id, якщо getBestsellers його підтримує
+    getBestsellers(region.id).then(setProducts);
+  }, [region]);
 
   const settings = {
     slidesToShow: 4,
@@ -35,22 +41,13 @@ const Bestsellers: FC = () => {
         ))}
       </Slider>
       <div className="flex items-center justify-between mt-6">
-        <button
-          onClick={() => sliderRef.current?.slickPrev()}
-          className="text-gray-500 hover:text-gray-800"
-        >
+        <button onClick={() => sliderRef.current?.slickPrev()} className="text-gray-500 hover:text-gray-800">
           ← Назад
         </button>
-        <Link
-          href="/collections/bestsellers"
-          className="text-sm font-medium text-gray-700 hover:underline"
-        >
+        <Link href="/collections/bestsellers" className="text-sm font-medium text-gray-700 hover:underline">
           Перейти до категорії
         </Link>
-        <button
-          onClick={() => sliderRef.current?.slickNext()}
-          className="text-gray-500 hover:text-gray-800"
-        >
+        <button onClick={() => sliderRef.current?.slickNext()} className="text-gray-500 hover:text-gray-800">
           Далі →
         </button>
       </div>
