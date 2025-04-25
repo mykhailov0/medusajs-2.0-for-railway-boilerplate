@@ -5,7 +5,7 @@ import { sdk } from "../../../lib/config";
 import Hero from "@modules/home/components/hero";               // папка hero з малої літери
 import FeaturedProducts from "@modules/home/components/featured-products";
 import { HttpTypes } from "@medusajs/types";
-import Bestsellers from "@modules/home/components/Bestsellers";
+import Bestsellers from "@/components/Bestsellers";
 
 export default async function Page({
   params,

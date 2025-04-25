@@ -1,6 +1,9 @@
+// src/modules/common/components/ProductCard.tsx
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { Product } from "@lib/types";
+import { Product } from "@lib/types";  // або з вашого джерела типів
 
 type Props = {
   product: Product;
