@@ -20,16 +20,15 @@ export default function HeroSlider({ products, region }: Props) {
   const next = () => setIdx((i) => (i + 1) % total)
 
   const product = products[idx]
-  // Безпечна перевірка варіантів
   const variant = product.variants?.[0]
   const price = (variant as any)?.calculated_price ?? 0
 
   return (
-    <section className="bg-gray-100 py-16">
-      <div className="max-w-[1400px] mx-auto relative">
-        <div className="flex bg-white rounded-3xl overflow-hidden shadow-lg">
-          {/* Ліва частина: текст */}
-          <div className="w-1/2 p-12 flex flex-col justify-center space-y-6">
+    <section className="bg-gray-100 flex justify-center items-start pt-[100px]">
+      <div className="relative max-w-[1400px] w-full h-[870px]">
+        <div className="flex h-full bg-white rounded-3xl overflow-hidden shadow-lg">
+          {/* Ліва колонка з текстом */}
+          <div className="flex-1 p-12 flex flex-col justify-center space-y-6">
             <span className="text-sm uppercase font-medium text-gray-500">
               Рекомендуємо
             </span>
@@ -50,41 +49,44 @@ export default function HeroSlider({ products, region }: Props) {
             </div>
           </div>
 
-          {/* Права частина: картинка */}
-          <div className="w-1/2 relative">
-            <Image
-              src={product.thumbnail!}
-              alt={product.title!}
-              fill
-              className="object-cover"
-            />
+          {/* Права колонка з альбомом + навігацією під ним */}
+          <div className="w-[709px] flex flex-col items-center justify-start pt-8">
+            {/* Картинка 709×709 */}
+            <div className="relative w-[709px] h-[709px] rounded-xl overflow-hidden shadow-md">
+              <Image
+                src={product.thumbnail!}
+                alt={product.title!}
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            {/* Навігація під картинкою */}
+            <div className="mt-6 flex items-center justify-between w-full px-12">
+              <button
+                onClick={prev}
+                className="p-3 bg-white bg-opacity-75 rounded-full hover:bg-opacity-100 transition"
+                aria-label="Попередній"
+              >
+                ←
+              </button>
+
+              <Link
+                href="/catalog"
+                className="text-sm uppercase text-gray-600 hover:text-gray-800 transition"
+              >
+                Подивитись весь каталог
+              </Link>
+
+              <button
+                onClick={next}
+                className="p-3 bg-white bg-opacity-75 rounded-full hover:bg-opacity-100 transition"
+                aria-label="Наступний"
+              >
+                →
+              </button>
+            </div>
           </div>
-        </div>
-
-        {/* Навігація */}
-        <div className="absolute inset-x-0 bottom-4 px-12 flex items-center justify-between">
-          <button
-            onClick={prev}
-            className="p-3 bg-white bg-opacity-75 rounded-full hover:bg-opacity-100 transition"
-            aria-label="Попередній"
-          >
-            ←
-          </button>
-
-          <Link
-            href="/catalog"
-            className="text-sm uppercase text-gray-600 hover:text-gray-800 transition"
-          >
-            Подивитись весь каталог
-          </Link>
-
-          <button
-            onClick={next}
-            className="p-3 bg-white bg-opacity-75 rounded-full hover:bg-opacity-100 transition"
-            aria-label="Наступний"
-          >
-            →
-          </button>
         </div>
       </div>
     </section>
