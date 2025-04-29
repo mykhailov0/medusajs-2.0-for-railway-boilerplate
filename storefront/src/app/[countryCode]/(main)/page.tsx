@@ -1,21 +1,20 @@
+// src/app/[countryCode]/(main)/page.tsx
 import { sdk } from "@lib/config";
 import Hero from "@modules/home/components/hero";
 import FeaturedProducts from "@modules/home/components/featured-products";
 import { HttpTypes } from "@medusajs/types";
 
 export default async function Page({ params }: { params: { countryCode: string } }) {
-  // Отримуємо список регіонів
+  // Отримуємо список регіонів та детальний об'єкт регіону
   const regionList = await sdk.store.region.list();
   const regionId = regionList.regions[0].id;
-
-  // Отримуємо повний об'єкт регіону
   const { region } = await sdk.store.region.retrieve(regionId);
 
   // Hero: один товар з тегом "hero"
   const { products: heroProducts } = await sdk.store.product.list({
     region_id: regionId,
     limit: 1,
-    tags: ["hero"],
+    filter: { tags: ["hero"] },
   });
 
   // Featured Products: колекції
