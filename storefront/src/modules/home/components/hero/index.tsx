@@ -1,33 +1,16 @@
 // src/modules/home/components/hero/index.tsx
 import React from "react"
-import { HttpTypes } from "@medusajs/types"
-import { sdk } from "@lib/config"
+import type { StoreProduct, StoreRegion } from "@medusajs/types"
 import HeroSlider from "./HeroSliderClient"
 
 type Props = {
-  region: HttpTypes.StoreRegion
+  products: StoreProduct[]
+  region: StoreRegion
 }
 
-export default async function Hero({ region }: Props) {
-  // 1) Завантажуємо перші 50 продуктів
-  const { products } = await sdk.store.product.list({
-    limit: 50,
-    offset: 0,
-  })
-
-  // 2) Фільтруємо за тегом "hero"
-  const heroProducts = products.filter((p) =>
-    p.tags?.some((t) => t.value === "hero")
-  )
-
-  if (heroProducts.length === 0) {
+export default function Hero({ products, region }: Props) {
+  if (products.length === 0) {
     return null
   }
-
-  // 3) Обгортаємо клієнтський слайдер і даємо зверху відступ під хедер (100px)
-  return (
-    <div className="pt-[100px]">
-      <HeroSlider products={heroProducts} region={region} />
-    </div>
-  )
+  return <HeroSlider products={products} region={region} />
 }

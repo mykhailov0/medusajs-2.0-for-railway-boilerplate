@@ -1,16 +1,24 @@
-import { HttpTypes } from "@medusajs/types"
-import ProductRail from "@modules/home/components/featured-products/product-rail"
+"use client";
+import React from "react";
+import { HttpTypes } from "@medusajs/types";
+import ProductCard from "../../../components/ProductCard";
 
-export default async function FeaturedProducts({
-  collections,
-  region,
-}: {
-  collections: HttpTypes.StoreCollection[]
-  region: HttpTypes.StoreRegion
-}) {
-  return collections.map((collection) => (
-    <li key={collection.id}>
-      <ProductRail collection={collection} region={region} />
-    </li>
-  ))
+interface FeaturedProductsProps {
+  collections: HttpTypes.StoreCollection[];
+  region: HttpTypes.StoreRegion;
 }
+
+const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ collections, region }) => {
+  return (
+    <>
+      {collections.map((col) => (
+        <li key={col.id} className="col-span-1">
+          <h3 className="text-xl font-semibold mb-4">{col.title}</h3>
+          {/* Тут можна додати <ProductCard /> для продуктів з колекції */}
+        </li>
+      ))}
+    </>
+  );
+};
+
+export default FeaturedProducts;
