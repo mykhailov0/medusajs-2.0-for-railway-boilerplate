@@ -1,3 +1,4 @@
+import React from "react";
 import dynamic from "next/dynamic";
 
 const HeroSliderClient = dynamic(
@@ -5,10 +6,15 @@ const HeroSliderClient = dynamic(
   { ssr: false }
 );
 
+// інші імпорти
+import FeaturedProducts from "@modules/home/components/featured-products";
+import { sdk } from "@lib/config";
+import type { HttpTypes } from "@medusajs/types";
+
 export default async function HomePage() {
   return (
     <>
-      {/* інші секції */}
+      {/* інтерактивний слайдер лише на клієнті */}
       <HeroSliderClient />
       {/* інші секції */}
     </>
