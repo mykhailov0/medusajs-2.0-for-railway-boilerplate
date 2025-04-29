@@ -11,9 +11,9 @@ const navItems = [
     submenu: {
       columns: [
         [
-          { label: "ВІНІЛОВІ ПЛАТІВКИ", href: "/catalog/vinyl" },
-          { label: "CD-ДИСКИ", href: "/catalog/cd" },
-          { label: "ГОТОВІ КОМПЛЕКТИ", href: "/catalog/kits" },
+          { label: "ВІНІЛОВІ ПЛАТІВКИ", href: "/categories/vinyl" },
+          { label: "CD-ДИСКИ", href: "/categories/cd" },
+          { label: "ГОТОВІ КОМПЛЕКТИ", href: "/categories/kits" },
         ],
         [
           { label: "ВИКОНАВЕЦЬ", href: "/catalog/artist" },
