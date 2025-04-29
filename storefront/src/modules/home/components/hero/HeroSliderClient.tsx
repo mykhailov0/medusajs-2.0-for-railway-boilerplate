@@ -73,15 +73,15 @@ const HeroSliderClient: React.FC<HeroSliderClientProps> = ({ limit = 5 }) => {
                 </div>
               </div>
               <div className="w-1/2 flex justify-end">
-                {imageUrl && (
+                {imageUrl ? (
                   <Image
                     src={imageUrl}
-                    alt={p.title}
+                    alt={p.title ?? ""}
                     width={500}
                     height={500}
                     className="rounded-2xl shadow-lg object-cover"
                   />
-                )}
+                ) : null}
               </div>
             </div>
           );
@@ -99,6 +99,7 @@ const HeroSliderClient: React.FC<HeroSliderClientProps> = ({ limit = 5 }) => {
         </button>
         <button
           title="Подивитись весь каталог"
+          aria-label="Подивитись весь каталог"
           onClick={() => (window.location.href = "/store")}
           className="uppercase text-sm text-white opacity-80 hover:opacity-100 transition"
         >
